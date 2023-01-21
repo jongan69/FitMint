@@ -1,0 +1,90 @@
+import "@bacons/expo-metro-runtime";
+import React from "react";
+import { View, StyleSheet, Platform } from "react-native";
+import { A, Footer, H1, H3, Main } from '@expo/html-elements';
+import { useRef } from 'react';
+import Constants from 'expo-constants';
+import useCachedResources from "../hooks/useCachedResources";
+import useColorScheme from "../hooks/useColorScheme";
+
+// If redux not needed, uncomment to use context throughout
+// import AppProvider from "./src/context/AppProvider";
+
+// In Development, remove and test before PROD
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs(); //Ignore all log notifications
+
+export default function StaticWeb() {
+    const isLoadingComplete = useCachedResources();
+    const colorScheme = useColorScheme();
+    const ref = useRef(null)
+
+    if (!isLoadingComplete) {
+        return null;
+    }
+
+    if (Platform.OS === 'web') {
+        return (
+            <View style={styles.container}>
+                <Main style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <H1 style={{
+                        fontSize: 50,
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        ...Platform.select({
+                            web: {
+                                backgroundClip: 'text',
+                                WebkitBackgroundClip: 'text',
+                                textFillColor: 'transparent',
+                                color: 'transparent',
+                                backgroundImage: 'linear-gradient(90deg,#7928CA,#FF0080)'
+                            },
+                            default: {
+                                color: '#FF0080'
+                            }
+                        })
+                    }}>
+                        {`Welcome to ${Constants.name}`}
+                    </H1>
+                    <A
+                        ref={ref}
+                        style={{
+                            fontSize: 24,
+                            fontWeight: 'bold',
+                            color: '#fff',
+                            opacity: 1,
+                            ...Platform.select({
+                                web: {
+                                    transitionDuration: '500ms',
+                                },
+                                default: {
+
+                                }
+                            })
+                        }}
+                        target="_blank" href="https://github.com/EvanBacon/Metro-web-demo">
+                        View Source
+                    </A>
+                </Main>
+                <Footer>
+                    <H3 style={{
+                        fontSize: 18,
+                        fontWeight: '200',
+                        color: '#b7b8bf',
+                    }} >
+                        ('Inspect Element {">"} Sources' to see bundle results)
+                    </H3>
+                </Footer>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#000",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+});
