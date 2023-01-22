@@ -1,6 +1,6 @@
 # FitMint
 
-[![CodeQL](https://github.com/jongan69/xdctind/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/fitmint/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/jongan69/fitmint/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/fitmint/actions/workflows/codeql-analysis.yml)
 
 - React Native
 - Solidity Contract ABI usage
