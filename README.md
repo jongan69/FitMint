@@ -2,6 +2,8 @@
 
 [![CodeQL](https://github.com/jongan69/FitMint/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/FitMint/actions/workflows/codeql-analysis.yml)
 
+[![Build and lint](https://github.com/jongan69/FitMint/actions/workflows/validate.yml/badge.svg)](https://github.com/jongan69/FitMint/actions/workflows/validate.yml)
+
 - React Native
 - Solidity Contract ABI usage
 - `api` directory w/ Nextjs thirdwebjs sdk
