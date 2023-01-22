@@ -3,9 +3,18 @@ import React, { useState } from "react";
 import { ScrollView, Text, Image, TouchableOpacity, View } from "react-native";
 import { styles } from "../constants/Styles";
 
+// Redux
+import { RootState } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getKey } from '../store/wallet';
+
 const ProfileScreen = () => {
+
   const [email, setEmail] = useState<string>("");
   const [showPrivateKey, setShowPrivateKey] = useState(false);
+  // Needs to check for Key in store/wallet/private key
+  const [key, setKey] = useState("");
+
   const { colors } = useTheme();
 
   return (
@@ -62,11 +71,13 @@ const ProfileScreen = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        {showPrivateKey ? (
-          <Text style={[{ color: colors.text }, styles.textBox]}>{key}</Text>
+
+        {showPrivateKey ?  (
+          <Text style={[{ color: colors.text }, styles.textBox]}>{key ? key : "No Key"}</Text>
         ) : (
           <></>
         )}
+
         <View>
           <Text style={styles.h2}>Bio:</Text>
         </View>
@@ -145,7 +156,7 @@ const ProfileScreen = () => {
                 Wallet Address:
               </Text>
               <Text style={[{ color: colors.text }, styles.text]}>
-               ADDRESS
+                ADDRESS
                 {/* {currentWalletAddress.slice(0, 5)}...
                 {currentWalletAddress.slice(-4)} */}
               </Text>

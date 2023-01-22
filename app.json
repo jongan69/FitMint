@@ -13,7 +13,7 @@
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFF"
+      "backgroundColor": "#00B08C"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -28,11 +28,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#00B08C"
       }
     },
     "web": {
-      "favicon": "./src/assets/images/favicon.png",
+      "favicon": "./src/assets/images/favicon.ico",
       "bundler": "metro"
     }
   }

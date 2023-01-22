@@ -47,11 +47,13 @@ const CustomDrawer = (
       descriptors: DrawerDescriptorMap;
     })
 ) => {
+
   const { colors } = useTheme();
   const [balance, setBalance] = React.useState(0);
   const dispatch = useDispatch();
   const loggedin = useSelector((state: RootState) => state.login.loggedIn); 
   const isGuest = useSelector((state: RootState) => state.login.guest);
+  
   
   const userType = loggedin && !isGuest ? `Member` : `Guest`;
   console.log(`data is ${userType} ${isGuest}`)

@@ -15,11 +15,13 @@ import Feather from "react-native-vector-icons/Feather";
 
 import { styles } from "../constants/Styles";
 const Payment = ({ navigation }) => {
+  
   const [favorsTab, setMoneyTab] = useState(1);
 
   const onSelectSwitch = (value) => {
     setMoneyTab(value);
   };
+
   return (
     <SafeAreaView>
       <ScrollView style={{ padding: 20 }}>

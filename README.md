@@ -1,6 +1,6 @@
-# Capsule
+# FitMint
 
-[![CodeQL](https://github.com/jongan69/xdctind/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/xdctind/actions/workflows/codeql-analysis.yml)
+[![CodeQL](https://github.com/jongan69/xdctind/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/fitmint/actions/workflows/codeql-analysis.yml)
 
 - React Native
 - Solidity Contract ABI usage
@@ -10,15 +10,15 @@
 
 Includes demo solidity contracts with a `compile-contracts` command in `package.json`
 
-Built under The XDC 2022 Hackathon
+Built under The FVM ETH Global Hackathon
 
 ------
 
 ## Demo
 
-[LATEST APP X.XX (Expo)](https://expo.dev/@jongan69/xdctind)
+[LATEST APP X.XX (Expo)](https://expo.dev/@jongan69/)
 
-[LATEST CONTRACT X.XX (XDC Network)](https://remix.xinfin.network/#optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.7+commit.e28d00a7.js)
+[LATEST CONTRACT X.XX (FVM Wallabey Network)]
 
 ------
 
@@ -71,9 +71,9 @@ To Run Nextjs App:
 - [x] Expo React Native App
 - [x] Web3Auth - React Native SDK
 - [x] Add Redux Thunk
-- [x] Switch Context with Redux Store
-- [->] Create all redux slices w/ actions
+- [x] Switched Context with Redux Store
+- [x] Create all redux slices w/ actions
 - [->] Replace Reducer Functions with Secure Store Functions
 - [->] Build corresponding contract
-- [->] Deploy contract to XDC
+- [->] Deploy contract to FVM
 - [->] Connect Mobile UI to Smart Contract Functions

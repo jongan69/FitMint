@@ -16,9 +16,6 @@ import { Provider } from 'react-redux';
 import { store } from './src/store';
 import { Toasts } from '@backpackapp-io/react-native-toast';
 
-// If redux not needed, uncomment to use context throughout
-// import AppProvider from "./src/context/AppProvider";
-
 // For Nhost DB
 // import { NHOST_BACKEND_URL } from "@env";
 const NHOST_BACKEND_URL = "https://kksxupgvxbpfpjbhedac.nhost.run";
@@ -45,7 +42,6 @@ export default function App() {
   if (isLoadingComplete && Platform.OS !== 'web') {
     return (
       <Provider store={store}>
-        {/* <AppProvider> */}
         <NhostReactProvider nhost={nhost}>
           <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
@@ -53,7 +49,6 @@ export default function App() {
             <Toasts />
           </SafeAreaProvider>
         </NhostReactProvider>
-        {/* </AppProvider> */}
       </Provider>
     )
   } else {

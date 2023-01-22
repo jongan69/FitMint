@@ -50,9 +50,9 @@ export default function HomeScreen({ navigation }) {
             />
             {selectedVideo !== undefined &&
               <View>
-                <Text>Name: {selectedVideo.name.toString()}</Text>
-                <Text>Size: {selectedVideo.size.toString()}</Text>
-                <Text>URI: {selectedVideo.uri.toString()}</Text>
+                <Text>Name: {selectedVideo?.name?.toString()}</Text>
+                <Text>Size: {selectedVideo?.size?.toString()}</Text>
+                <Text>URI: {selectedVideo?.uri?.toString()}</Text>
                 <VideoEditor/>
               </View>}
     </SafeAreaView >
