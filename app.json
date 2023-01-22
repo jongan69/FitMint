@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "capsule",
-    "slug": "capsule",
+    "name": "FitMint",
+    "slug": "FitMint",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "capsule",
-    "githubUrl": "https://github.com/jongan69/capsule",
-    "description": "A Health App",
+    "scheme": "fitmint",
+    "githubUrl": "https://github.com/jongan69/FitMint",
+    "description": "A Workout App",
     "userInterfaceStyle": "automatic",
     "jsEngine": "hermes",
     "splash": {
@@ -34,11 +34,6 @@
     "web": {
       "favicon": "./src/assets/images/favicon.png",
       "bundler": "metro"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "d3759bd9-f842-4879-b0ff-09dc8aa5f07f"
-      }
     }
   }
 }

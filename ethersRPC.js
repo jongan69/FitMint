@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
 // import { DAPP_CONTRACT } from "@env"
 
-// To do for contract deploy
+// To do for contract compile
 // 1. `yarn compile-contracts`
 // 2. Change import to the new artifacts/abi.json
 import * as TaskContractABI from './contracts/artifacts/TaskContract'
