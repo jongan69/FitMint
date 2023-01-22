@@ -18,7 +18,7 @@ Built under The FVM ETH Global Hackathon
 
 ## Demo
 
-[LATEST APP X.XX (Expo)](https://expo.dev/@jongan69/)
+[LATEST APP v1.00 (Expo)](https://expo.dev/@jongan69/FitMint?serviceType=classic&distribution=expo-go)
 
 [LATEST CONTRACT X.XX (FVM Wallabey Network)]
 
@@ -70,12 +70,23 @@ To Run Nextjs App:
 
 [Chaining Contract Calls](https://blog.chain.link/smart-contract-call-another-smart-contract/)
 
+React Native Work:
+
 - [x] Expo React Native App
 - [x] Web3Auth - React Native SDK
 - [x] Add Redux Thunk
 - [x] Switched Context with Redux Store
 - [x] Create all redux slices w/ actions
-- [->] Replace Reducer Functions with Secure Store Functions
-- [->] Build corresponding contract
+- [x] Replace Reducer Functions with Secure Store Functions
+- [->] Create 7 Minute Workout app in React Native
+- [->] Connect Mobile UI to Smart Contract Minting and Getting Functions
+- [->] Create Feed for all failed and minted workouts
+
+Solidity Smart Contract Work:
+
+- [->] Build corresponding contract for Minting NFTs
 - [->] Deploy contract to FVM
-- [->] Connect Mobile UI to Smart Contract Functions
+
+API Work:
+
+- [->] Allow user into discord if NFT was minted w/ Discord user
