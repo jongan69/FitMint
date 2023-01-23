@@ -19,7 +19,7 @@ export default function HomeScreen({ navigation }) {
       <Text>Home</Text>
       <Button
         title="Start Workout"
-        onPress={() => navigation.navigate('workout')}
+        onPress={() => navigation.navigate('Workout')}
       />
       <Button
         title="Settings"
