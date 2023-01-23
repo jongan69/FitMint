@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, Alert, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
 
 function WorkoutScreen({ navigation }) {
     const images = [
@@ -37,7 +37,7 @@ function WorkoutScreen({ navigation }) {
     const workoutTimeInSeconds = 420;
     const exerciseIntervalsInSeconds = 29;
     const breakTimeInSeconds = 9;
-    const cancelTime = 5;
+    const defaultCancelTime = 5;
 
     // Use to test faster
     // const workoutTimeInSeconds = 50;
@@ -52,16 +52,44 @@ function WorkoutScreen({ navigation }) {
     const [onBreak, setBreak] = useState(false);
 
     // For Hold To Cancel
-    const [timesPressed, setTimesPressed] = useState(0);
     const [canceling, setCanceling] = useState(false);
     const [isCanceled, setIsCanceled] = useState(false);
+    const [cancelTime, setCancelTime] = useState(defaultCancelTime);
 
-    let textLog = '';
-    if (timesPressed > 1) {
-        textLog = timesPressed + 'x onPress';
-    } else if (timesPressed > 0) {
-        textLog = 'onPress';
-    }
+
+    // Cancel Workout Timer
+    useEffect(() => {
+        let cancelCount = setInterval(() => {
+            setCancelTime(current => current - 1);
+            console.log('Time til cancel:', cancelTime)
+
+            if (cancelTime === 0) {
+                clearInterval(cancelCount)
+                setIsCanceled(true)
+            }
+
+            if (!canceling) {
+                clearInterval(cancelCount)
+                setIsCanceled(false)
+            }
+        }, 1000);
+
+        if (cancelTime === 0) {
+            Alert.alert('Workout failed')
+            navigation.navigate('Main')
+        }
+
+        if (!canceling) {
+            setCancelTime(defaultCancelTime);
+        }
+        
+        return () => {
+            clearInterval(cancelCount);
+            setCancelTime(defaultCancelTime);
+
+        }
+    }, [canceling])
+
 
     // Main Timer Use Effect
     useEffect(() => {
@@ -85,8 +113,9 @@ function WorkoutScreen({ navigation }) {
             if (excerciseTime === 0) {
                 setExerciseCount((prevCount) => prevCount + 1);
                 if (exerciseCount > exerciseNames.length) {
-                    Alert.alert('Workout Complete');
                     navigation.navigate('Completed');
+                    clearInterval(exerciseInterval);
+                    return
                 }
 
                 clearInterval(exerciseInterval);
@@ -111,8 +140,9 @@ function WorkoutScreen({ navigation }) {
         const breakInterval = setInterval(() => {
             if (breakTime === 0) {
                 if (exerciseCount > exerciseNames.length) {
-                    Alert.alert('Workout Complete');
                     navigation.navigate('Completed');
+                    clearInterval(breakInterval);
+                    return
                 }
                 clearInterval(breakInterval);
                 setExerciseTime(exerciseIntervalsInSeconds);
@@ -132,40 +162,17 @@ function WorkoutScreen({ navigation }) {
 
                 onPressIn={() => {
                     setCanceling(true)
-                    let cancelCount = setInterval(() => {
-                        setTimesPressed(current => current + 1);
-                        if ((cancelTime - timesPressed) === 0) {
-                            setIsCanceled(true)
-                            clearInterval(cancelCount)
-                            navigation.navigate('Main')
-                            Alert.alert('Workout failed')
-                        }
-
-                        if (!canceling) {
-                            clearInterval(cancelCount)
-                            setIsCanceled(false)
-                        }
-                    }, 1000);
                 }}
 
                 onPressOut={() => {
-                    if (isCanceled) {
-                        navigation.navigate('Home')
-                        Alert.alert('Workout failed')
-                    } else {
-                        setCanceling(false)
-                    }
-                }}
-
-                delayLongPress={(cancelTime * 1000)}
-
-                onLongPress={() => {
-                    setIsCanceled(true)
+                    !isCanceled
+                        ? () => { setCanceling(false) }
+                        : () => { navigation.navigate('Main') }
                 }}
 
                 style={({ pressed }) => [
                     {
-                        backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+                        backgroundColor: pressed ? 'red' : 'white',
                     },
                     styles.wrapperCustom,
                 ]}>
@@ -187,9 +194,21 @@ function WorkoutScreen({ navigation }) {
                     </>
                 )}
 
-                {canceling && <Text style={{ color: 'red' }}>Canceling in {cancelTime - timesPressed}</Text>}
 
             </Pressable>
+
+            {canceling &&
+                <>
+                    <Button
+                        title="Continue Workout"
+                        onPress={() => {
+                            setCanceling(false)
+                        }}
+                    />
+                    <Text style={{ color: 'black' }}>Canceling in {cancelTime}</Text>
+                </>
+            }
+
         </View>
 
     );
