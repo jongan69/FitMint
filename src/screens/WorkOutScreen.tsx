@@ -50,8 +50,12 @@ function WorkoutScreen({ navigation }) {
     const [breakTime, setBreakTime] = useState(0);
     const [exerciseCount, setExerciseCount] = useState(1);
     const [onBreak, setBreak] = useState(false);
+
+    // For Hold To Cancel
     const [timesPressed, setTimesPressed] = useState(0);
-    const [cancel, setCancel] = useState(false);
+    const [canceling, setCanceling] = useState(false);
+    const [isCanceled, setIsCanceled] = useState(false);
+
     let textLog = '';
     if (timesPressed > 1) {
         textLog = timesPressed + 'x onPress';
@@ -64,7 +68,7 @@ function WorkoutScreen({ navigation }) {
         const workoutInterval = setInterval(() => {
             if (workoutTime === 0) {
                 Alert.alert('Workout Complete');
-                navigation.navigate('Home');
+                navigation.navigate('Completed');
                 clearInterval(workoutInterval);
                 return;
             }
@@ -82,7 +86,7 @@ function WorkoutScreen({ navigation }) {
                 setExerciseCount((prevCount) => prevCount + 1);
                 if (exerciseCount > exerciseNames.length) {
                     Alert.alert('Workout Complete');
-                    navigation.navigate('Home');
+                    navigation.navigate('Completed');
                 }
 
                 clearInterval(exerciseInterval);
@@ -108,7 +112,7 @@ function WorkoutScreen({ navigation }) {
             if (breakTime === 0) {
                 if (exerciseCount > exerciseNames.length) {
                     Alert.alert('Workout Complete');
-                    navigation.navigate('Home');
+                    navigation.navigate('Completed');
                 }
                 clearInterval(breakInterval);
                 setExerciseTime(exerciseIntervalsInSeconds);
@@ -125,25 +129,41 @@ function WorkoutScreen({ navigation }) {
 
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Pressable
+
                 onPressIn={() => {
-                    setCancel(true)
+                    setCanceling(true)
                     let cancelCount = setInterval(() => {
                         setTimesPressed(current => current + 1);
-                        if (cancelTime - timesPressed === 0) {
+                        if ((cancelTime - timesPressed) === 0) {
+                            setIsCanceled(true)
                             clearInterval(cancelCount)
-                            navigation.navigate('Home')
+                            navigation.navigate('Main')
                             Alert.alert('Workout failed')
+                        }
+
+                        if (!canceling) {
+                            clearInterval(cancelCount)
+                            setIsCanceled(false)
                         }
                     }, 1000);
                 }}
+
                 onPressOut={() => {
-                    navigation.navigate('Home')
-                    Alert.alert('Workout failed')
+                    if (isCanceled) {
+                        navigation.navigate('Home')
+                        Alert.alert('Workout failed')
+                    } else {
+                        setCanceling(false)
+                        setIsCanceled(false)
+                    }
                 }}
+
                 delayLongPress={(cancelTime * 1000)}
+                
                 onLongPress={() => {
-                    Alert.alert('Workout failed')
+                    setIsCanceled(true)
                 }}
+
                 style={({ pressed }) => [
                     {
                         backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
@@ -152,6 +172,7 @@ function WorkoutScreen({ navigation }) {
                 ]}>
 
                 <Text>Timer: {workoutTime} seconds</Text>
+
                 {!onBreak ? (
                     <>
                         <Image source={images[exerciseCount - 1]} />
@@ -167,7 +188,7 @@ function WorkoutScreen({ navigation }) {
                     </>
                 )}
 
-                {cancel && <Text style={{ color: 'red' }}>Canceling in {cancelTime - timesPressed}</Text>}
+                {canceling && <Text style={{ color: 'red' }}>Canceling in {cancelTime - timesPressed}</Text>}
 
             </Pressable>
         </View>

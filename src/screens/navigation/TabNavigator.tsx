@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@react-navigation/native';
 import PaymentScreen from '../PaymentScreen';
 import WorkoutScreen from '../WorkOutScreen';
+import CompletedScreen from '../CompletedScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -18,9 +19,19 @@ const HomeStack = () => {
         component={HomeScreen}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="Workout"
         component={WorkoutScreen}
+        options={{ 
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      />
+
+      <Stack.Screen
+        name="Completed"
+        component={CompletedScreen}
         options={{ 
           headerShown: false,
           gestureEnabled: false
