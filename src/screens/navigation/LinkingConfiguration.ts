@@ -21,6 +21,7 @@ const linking: LinkingOptions<RootStackParamList | AuthStackParamList> = {
       Root: {
         screens: {
           Home: 'Home',
+          Workout: 'Workout',
           Profile: 'Profile',
           Settings: 'Settings',
         },

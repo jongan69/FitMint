@@ -6,6 +6,7 @@ import HomeScreen from '../HomeScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@react-navigation/native';
 import PaymentScreen from '../PaymentScreen';
+import WorkoutScreen from '../WorkOutScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -13,17 +14,15 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Favors"
+        name="Main"
         component={HomeScreen}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
-        name="Offers"
-        component={OffersScreen}
-        options={({route}) => ({
-          title: route.params?.title,
-        })}
-      /> */}
+      <Stack.Screen
+        name="Workout"
+        component={WorkoutScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
@@ -72,10 +71,10 @@ const TabNavigator = () => {
 const getTabBarVisibility = (route: Partial<Route<string, object | undefined>>) => {
   // console.log(route);
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
-  // console.log(routeName);
-  // if( routeName == 'News' ) {
-  //   return 'none';
-  // }
+  console.log(routeName);
+  if( routeName == 'Workout' ) {
+    return 'none';
+  }
   return 'flex';
 };
 
