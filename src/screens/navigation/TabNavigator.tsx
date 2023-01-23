@@ -21,7 +21,10 @@ const HomeStack = () => {
       <Stack.Screen
         name="Workout"
         component={WorkoutScreen}
-        options={{ headerShown: false }}
+        options={{ 
+          headerShown: false,
+          gestureEnabled: false
+        }}
       />
     </Stack.Navigator>
   );

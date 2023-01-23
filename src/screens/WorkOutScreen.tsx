@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, Alert } from 'react-native';
+import { View, Text, Image, Alert, Pressable, StyleSheet } from 'react-native';
 
 function WorkoutScreen({ navigation }) {
     const images = [
@@ -37,6 +37,7 @@ function WorkoutScreen({ navigation }) {
     const workoutTimeInSeconds = 420;
     const exerciseIntervalsInSeconds = 29;
     const breakTimeInSeconds = 9;
+    const cancelTime = 5;
 
     // Use to test faster
     // const workoutTimeInSeconds = 50;
@@ -49,13 +50,21 @@ function WorkoutScreen({ navigation }) {
     const [breakTime, setBreakTime] = useState(0);
     const [exerciseCount, setExerciseCount] = useState(1);
     const [onBreak, setBreak] = useState(false);
+    const [timesPressed, setTimesPressed] = useState(0);
+    const [cancel, setCancel] = useState(false);
+    let textLog = '';
+    if (timesPressed > 1) {
+        textLog = timesPressed + 'x onPress';
+    } else if (timesPressed > 0) {
+        textLog = 'onPress';
+    }
 
     // Main Timer Use Effect
     useEffect(() => {
         const workoutInterval = setInterval(() => {
             if (workoutTime === 0) {
                 Alert.alert('Workout Complete');
-                navigation.navigate('home');
+                navigation.navigate('Home');
                 clearInterval(workoutInterval);
                 return;
             }
@@ -73,7 +82,7 @@ function WorkoutScreen({ navigation }) {
                 setExerciseCount((prevCount) => prevCount + 1);
                 if (exerciseCount > exerciseNames.length) {
                     Alert.alert('Workout Complete');
-                    navigation.navigate('home');
+                    navigation.navigate('Home');
                 }
 
                 clearInterval(exerciseInterval);
@@ -99,7 +108,7 @@ function WorkoutScreen({ navigation }) {
             if (breakTime === 0) {
                 if (exerciseCount > exerciseNames.length) {
                     Alert.alert('Workout Complete');
-                    navigation.navigate('home');
+                    navigation.navigate('Home');
                 }
                 clearInterval(breakInterval);
                 setExerciseTime(exerciseIntervalsInSeconds);
@@ -113,24 +122,79 @@ function WorkoutScreen({ navigation }) {
     }, [breakTime]);
 
     return (
+
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>Timer: {workoutTime} seconds</Text>
-            {!onBreak ? (
-                <>
-                    <Image source={images[exerciseCount - 1]} />
-                    <Text>
-                        Exercise #{exerciseCount}: {exerciseNames[exerciseCount - 1]}
-                    </Text>
-                    <Text>Exercise Countdown: {excerciseTime} seconds</Text>
-                </>
-            ) : (
-                <>
-                    <Text>Break Time! </Text>
-                    <Text>Break Countdown: {breakTime} seconds </Text>
-                </>
-            )}
+            <Pressable
+                onPressIn={() => {
+                    setCancel(true)
+                    let cancelCount = setInterval(() => {
+                        setTimesPressed(current => current + 1);
+                        if (cancelTime - timesPressed === 0) {
+                            clearInterval(cancelCount)
+                            navigation.navigate('Home')
+                            Alert.alert('Workout failed')
+                        }
+                    }, 1000);
+                }}
+                onPressOut={() => {
+                    navigation.navigate('Home')
+                    Alert.alert('Workout failed')
+                }}
+                delayLongPress={(cancelTime * 1000)}
+                onLongPress={() => {
+                    Alert.alert('Workout failed')
+                }}
+                style={({ pressed }) => [
+                    {
+                        backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
+                    },
+                    styles.wrapperCustom,
+                ]}>
+
+                <Text>Timer: {workoutTime} seconds</Text>
+                {!onBreak ? (
+                    <>
+                        <Image source={images[exerciseCount - 1]} />
+                        <Text>
+                            Exercise #{exerciseCount}: {exerciseNames[exerciseCount - 1]}
+                        </Text>
+                        <Text>Exercise Countdown: {excerciseTime} seconds</Text>
+                    </>
+                ) : (
+                    <>
+                        <Text>Break Time! </Text>
+                        <Text>Break Countdown: {breakTime} seconds </Text>
+                    </>
+                )}
+
+                {cancel && <Text style={{ color: 'red' }}>Canceling in {cancelTime - timesPressed}</Text>}
+
+            </Pressable>
         </View>
+
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    text: {
+        fontSize: 16,
+    },
+    wrapperCustom: {
+        borderRadius: 8,
+        padding: 6,
+    },
+    logBox: {
+        padding: 20,
+        margin: 10,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: '#f0f0f0',
+        backgroundColor: '#f9f9f9',
+    },
+});
+
 
 export default WorkoutScreen

@@ -8,8 +8,8 @@ import {
 
 export default function HomeScreen({ navigation }) {
   return (
-   
-       <View
+
+    <View
       style={{
         flex: 1,
         alignItems: 'center',
@@ -26,6 +26,6 @@ export default function HomeScreen({ navigation }) {
         onPress={() => navigation.navigate('Settings')}
       />
     </View>
-  
+
   );
 }
