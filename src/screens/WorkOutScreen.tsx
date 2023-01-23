@@ -154,12 +154,11 @@ function WorkoutScreen({ navigation }) {
                         Alert.alert('Workout failed')
                     } else {
                         setCanceling(false)
-                        setIsCanceled(false)
                     }
                 }}
 
                 delayLongPress={(cancelTime * 1000)}
-                
+
                 onLongPress={() => {
                     setIsCanceled(true)
                 }}
