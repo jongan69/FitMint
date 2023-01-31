@@ -1,8 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 
+// destructured
 function WorkoutScreen({ navigation }) {
+    // image 9 too big, image 10 not centered
     const images = [
         require('../assets/images/workout-images/image1.gif'),
         require('../assets/images/workout-images/image2.gif'),
@@ -33,132 +36,202 @@ function WorkoutScreen({ navigation }) {
         'Side Plank (15 seconds Each Side)',
     ];
 
-    // Constant Lengths of Time
-    const workoutTimeInSeconds = 420;
-    const exerciseIntervalsInSeconds = 29;
-    const breakTimeInSeconds = 9;
-    const defaultCancelTime = 5;
-
-    // Use to test faster
-    // const workoutTimeInSeconds = 50;
-    // const exerciseIntervalsInSeconds = 2;
-    // const breakTimeInSeconds = 2;
-
-    // State Hooks for timers
-    const [workoutTime, setWorkoutTime] = useState(workoutTimeInSeconds);
-    const [excerciseTime, setExerciseTime] = useState(exerciseIntervalsInSeconds);
+    const execeriseTime = 29;
+    const breakTimeConst = 9;
+    const totalExerciseConst = 420;
+  
+    const [workoutTime, setWorkoutTime] = useState(totalExerciseConst);
+    const [excerciseTime, setExerciseTime] = useState(execeriseTime);
     const [breakTime, setBreakTime] = useState(0);
     const [exerciseCount, setExerciseCount] = useState(1);
     const [onBreak, setBreak] = useState(false);
 
-    // For Hold To Cancel
-    const [canceling, setCanceling] = useState(false);
-    const [isCanceled, setIsCanceled] = useState(false);
-    const [cancelTime, setCancelTime] = useState(defaultCancelTime);
-
-
-    // Cancel Workout Timer
-    useEffect(() => {
-        let cancelCount = setInterval(() => {
-            setCancelTime(current => current - 1);
-            console.log('Time til cancel:', cancelTime)
-
-            if (cancelTime === 0) {
-                clearInterval(cancelCount)
-                setIsCanceled(true)
-            }
-
-            if (!canceling) {
-                clearInterval(cancelCount)
-                setIsCanceled(false)
-            }
-        }, 1000);
-
-        if (cancelTime === 0) {
-            Alert.alert('Workout failed')
-            navigation.navigate('Main')
-        }
-
-        if (!canceling) {
-            setCancelTime(defaultCancelTime);
-        }
-        
-        return () => {
-            clearInterval(cancelCount);
-            setCancelTime(defaultCancelTime);
-
-        }
-    }, [canceling])
-
-
+    
+  
+  
     // Main Timer Use Effect
     useEffect(() => {
-        const workoutInterval = setInterval(() => {
-            if (workoutTime === 0) {
-                Alert.alert('Workout Complete');
-                navigation.navigate('Completed');
-                clearInterval(workoutInterval);
-                return;
-            }
-
-            setWorkoutTime((prevCountdown) => prevCountdown - 1);
-        }, 1000);
-
-        return () => clearInterval(workoutInterval);
+      const workoutInterval = setInterval(() => {
+        if (workoutTime === 0) {
+          clearInterval(workoutInterval);
+          Alert.alert('7 minutes have passed!');
+          return;
+        }
+        setWorkoutTime((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      return () => clearInterval(workoutInterval);
     }, [workoutTime]);
-
+  
+  
     // Exercise Timer Use Effect
     useEffect(() => {
-        const exerciseInterval = setInterval(() => {
-            if (excerciseTime === 0) {
-                setExerciseCount((prevCount) => prevCount + 1);
-                if (exerciseCount > exerciseNames.length) {
-                    navigation.navigate('Completed');
-                    clearInterval(exerciseInterval);
-                    return
-                }
-
-                clearInterval(exerciseInterval);
-                if (exerciseCount % 2 === 0) {
-                    setBreakTime(breakTimeInSeconds);
-                    setBreak(true);
-                } else {
-                    setExerciseTime(exerciseIntervalsInSeconds);
-                    setBreak(false);
-                }
-                return;
-            }
-
-            setExerciseTime((prevCountdown) => prevCountdown - 1);
-        }, 1000);
-
-        return () => clearInterval(exerciseInterval);
+      const exerciseInterval = setInterval(() => {
+        if (excerciseTime === 0) {
+          setExerciseCount((prevCount) => prevCount + 1);
+          clearInterval(exerciseInterval);
+          if (exerciseCount % 2 === 0) {
+            setBreakTime(breakTimeConst);
+            setBreak(true);
+          } else {
+            setExerciseTime(execeriseTime);
+            setBreak(false);
+          }
+          return;
+        }
+        setExerciseTime((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      return () => clearInterval(exerciseInterval);
     }, [excerciseTime]);
-
+  
+  
     // Break Timer Use Effect
     useEffect(() => {
-        const breakInterval = setInterval(() => {
-            if (breakTime === 0) {
-                if (exerciseCount > exerciseNames.length) {
-                    navigation.navigate('Completed');
-                    clearInterval(breakInterval);
-                    return
-                }
-                clearInterval(breakInterval);
-                setExerciseTime(exerciseIntervalsInSeconds);
-                setBreak(false);
-                return;
-            }
-            setBreakTime((prevIntervalCountdown) => prevIntervalCountdown - 1);
-        }, 1000);
-
-        return () => clearInterval(breakInterval);
+      const breakInterval = setInterval(() => {
+        if (breakTime === 0) {
+          clearInterval(breakInterval);
+          setExerciseTime(execeriseTime);
+          setBreak(false);
+          return;
+        }
+        setBreakTime((prevIntervalCountdown) => prevIntervalCountdown - 1);
+      }, 1000);
+      return () => clearInterval(breakInterval);
     }, [breakTime]);
+
+    // WORKOUT COMPLETE
+    // if(exerciseCount === 13) 
+    //     alert("all done");
+       
+   
+    
+  
+
+    // // Constant Lengths of Time
+    // const workoutTimeInSeconds = 420;
+    // const exerciseIntervalsInSeconds = 29;
+    // const breakTimeInSeconds = 9;
+    // const defaultCancelTime = 5;
+
+    // // Use to test faster
+    // // const workoutTimeInSeconds = 50;
+    // // const exerciseIntervalsInSeconds = 2;
+    // // const breakTimeInSeconds = 2;
+
+    // // State Hooks for timers
+    // const [workoutTime, setWorkoutTime] = useState(workoutTimeInSeconds);
+    // const [excerciseTime, setExerciseTime] = useState(exerciseIntervalsInSeconds);
+    // const [breakTime, setBreakTime] = useState(0);
+    // const [exerciseCount, setExerciseCount] = useState(1);
+    // const [onBreak, setBreak] = useState(false);
+
+    // // For Hold To Cancel
+    // const [canceling, setCanceling] = useState(false);
+    // const [isCanceled, setIsCanceled] = useState(false);
+    // const [cancelTime, setCancelTime] = useState(defaultCancelTime);
+
+
+    // // Cancel Workout Timer
+    // useEffect(() => {
+    //     let cancelCount = setInterval(() => {
+    //         setCancelTime(current => current - 1);
+    //         console.log('Time til cancel:', cancelTime)
+
+    //         if (cancelTime === 0) {
+    //             clearInterval(cancelCount)
+    //             setIsCanceled(true)
+    //         }
+
+    //         if (!canceling) {
+    //             clearInterval(cancelCount)
+    //             setIsCanceled(false)
+    //         }
+    //     }, 1000);
+
+    //     if (cancelTime === 0) {
+    //         Alert.alert('Workout failed')
+    //         navigation.navigate('Main')
+    //     }
+
+    //     if (!canceling) {
+    //         setCancelTime(defaultCancelTime);
+    //     }
+        
+    //     return () => {
+    //         clearInterval(cancelCount);
+    //         setCancelTime(defaultCancelTime);
+
+    //     }
+    // }, [canceling])
+
+
+    // // Main Timer Use Effect
+    // useEffect(() => {
+    //     const workoutInterval = setInterval(() => {
+    //         if (workoutTime === 0) {
+    //             Alert.alert('Workout Complete');
+    //             navigation.navigate('Completed');
+    //             clearInterval(workoutInterval);
+    //             return;
+    //         }
+
+    //         setWorkoutTime((prevCountdown) => prevCountdown - 1);
+    //     }, 1000);
+
+    //     return () => clearInterval(workoutInterval);
+    // }, [workoutTime]);
+
+    // // Exercise Timer Use Effect
+    // useEffect(() => {
+    //     const exerciseInterval = setInterval(() => {
+    //         if (excerciseTime === 0) {
+    //             setExerciseCount((prevCount) => prevCount + 1);
+    //             if (exerciseCount > exerciseNames.length) {
+    //                 navigation.navigate('Completed');
+    //                 clearInterval(exerciseInterval);
+    //                 return
+    //             }
+
+    //             clearInterval(exerciseInterval);
+    //             if (exerciseCount % 2 === 0) {
+    //                 setBreakTime(breakTimeInSeconds);
+    //                 setBreak(true);
+    //             } else {
+    //                 setExerciseTime(exerciseIntervalsInSeconds);
+    //                 setBreak(false);
+    //             }
+    //             return;
+    //         }
+
+    //         setExerciseTime((prevCountdown) => prevCountdown - 1);
+    //     }, 1000);
+
+    //     return () => clearInterval(exerciseInterval);
+    // }, [excerciseTime]);
+
+    // // Break Timer Use Effect
+    // useEffect(() => {
+    //     const breakInterval = setInterval(() => {
+    //         if (breakTime === 0) {
+    //             if (exerciseCount > exerciseNames.length) {
+    //                 navigation.navigate('Completed');
+    //                 clearInterval(breakInterval);
+    //                 return
+    //             }
+    //             clearInterval(breakInterval);
+    //             setExerciseTime(exerciseIntervalsInSeconds);
+    //             setBreak(false);
+    //             return;
+    //         }
+    //         setBreakTime((prevIntervalCountdown) => prevIntervalCountdown - 1);
+    //     }, 1000);
+
+    //     return () => clearInterval(breakInterval);
+    // }, [breakTime]);
 
     return (
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Pressable
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            {/* <Pressable
 
                 onPressIn={() => {
                     setCanceling(true)
@@ -175,29 +248,66 @@ function WorkoutScreen({ navigation }) {
                         backgroundColor: pressed ? 'red' : 'white',
                     },
                     styles.wrapperCustom,
-                ]}>
+                ]}> */}
 
-                <Text>Timer: {workoutTime} seconds</Text>
+                <Text style={styles.timerText}>{workoutTime} to go!</Text>
 
                 {!onBreak ? (
                     <>
-                        <Image source={images[exerciseCount - 1]} />
-                        <Text>
+                        <Image style={{
+                            resizeMode: 'cover',
+                            height: 300,
+                            width: 300, }}
+                            source={images[exerciseCount - 1]} />
+                        <Text style={styles.titleText}>
                             Exercise #{exerciseCount}: {exerciseNames[exerciseCount - 1]}
                         </Text>
-                        <Text>Exercise Countdown: {excerciseTime} seconds</Text>
+                     
+                        <CountdownCircleTimer
+                          isPlaying
+                          duration={29}
+                          colors={['#00FF00',  '#FF0000']}
+                          colorsTime={[29, 0]}
+                          onComplete={() => {
+                            // do your stuff here
+                            return { shouldRepeat: true, delay: 1 } // repeat animation in 1 seconds
+                          }}
+                        >
+                          {({ remainingTime }) => <Text style={styles.numberText}>{excerciseTime}</Text>}
+                        </CountdownCircleTimer>
+                        {/* <Text style={styles.bodyText}>Countdown: {excerciseTime} seconds</Text> */}
+                       
+                       
+                      
+                        <Button
+                         title="Cancel workout"
+                         onPress={() => navigation.navigate('Workout')}
+                         />
+                        
+                       
                     </>
                 ) : (
                     <>
-                        <Text>Break Time! </Text>
-                        <Text>Break Countdown: {breakTime} seconds </Text>
+                        <Text style={styles.titleText}>Break Time! </Text>
+                        <CountdownCircleTimer
+                          isPlaying
+                          duration={10}
+                          colors="#0080ff"
+                          onComplete={() => {
+                            // do your stuff here
+                            return { shouldRepeat: false  } // repeat animation in 1.5 seconds
+                          }}
+                          >
+                          {({ remainingTime }) => <Text style={styles.numberText}>{breakTime}</Text>}
+                          </CountdownCircleTimer>
+                        {/* <Text style={styles.bodyText}>Break Countdown: {breakTime} seconds </Text> */}
                     </>
                 )}
 
 
-            </Pressable>
+            {/* </Pressable> */}
 
-            {canceling &&
+            {/* {canceling &&
                 <>
                     <Button
                         title="Continue Workout"
@@ -207,12 +317,13 @@ function WorkoutScreen({ navigation }) {
                     />
                     <Text style={{ color: 'black' }}>Canceling in {cancelTime}</Text>
                 </>
-            }
+            } */}
 
         </View>
 
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -220,8 +331,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     text: {
-        fontSize: 16,
+        fontSize: 24,
+        
     },
+    titleText : {
+        fontSize: 30,
+        fontWeight: 'bold',
+        fontFamily: 'Helvetica'
+
+    },
+    bodyText: {
+        fontSize: 22,
+        fontFamily : 'Helvetica'
+
+    },
+    timerText : {
+        fontSize: 36,
+        fontWeight: 'bold',
+        fontFamily : 'Helvetica'
+    },
+    numberText : {
+        fontSize : 30,
+        fontWeight : 'bold',
+        fontFamily : 'Helvetica'
+    },
+
     wrapperCustom: {
         borderRadius: 8,
         padding: 6,
