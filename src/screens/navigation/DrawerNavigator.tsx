@@ -26,7 +26,7 @@ const DrawerNavigator = () => {
                 },
             }}>
             <Drawer.Screen
-                name="Home"
+                name="Main"
                 component={TabNavigator}
                 options={{
                     drawerIcon: ({ color }) => (
