@@ -9,7 +9,7 @@ const SettingsScreen = ({ navigation }) => {
       <Text style={{ color: colors.text }}>Settings</Text>
       <Button
         title="Home"
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Main')}
       />
     </View>
   )
