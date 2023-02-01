@@ -20,7 +20,7 @@ const HomeStack = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Workout"
         component={WorkoutScreen}
         options={{ 
@@ -36,7 +36,7 @@ const HomeStack = () => {
           headerShown: false,
           gestureEnabled: false
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
@@ -86,7 +86,7 @@ const getTabBarVisibility = (route: Partial<Route<string, object | undefined>>) 
   // console.log(route);
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
   console.log(routeName);
-  if( routeName == 'Workout' ) {
+  if (routeName == 'Workout') {
     return 'none';
   }
   return 'flex';

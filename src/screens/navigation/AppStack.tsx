@@ -1,67 +1,22 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import CustomDrawer from '../../components/CustomDrawer';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import ProfileScreen from '../ProfileScreen';
-import SettingsScreen from '../SettingsScreen';
-import { useTheme } from '@react-navigation/native';
-import TabNavigator from './TabNavigator';
-
-const Drawer = createDrawerNavigator();
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OnboardingScreen from '../OnboardingScreen';
+import LoginScreen from '../LoginScreen';
+import RegisterScreen from '../RegisterScreen';
+import NotFoundScreen from '../NotFoundScreen';
+import DrawerNavigator from './DrawerNavigator';
+import CompletedScreen from '../CompletedScreen';
+import WorkoutScreen from '../WorkOutScreen';
+const Stack = createNativeStackNavigator();
 
 const AppStack = () => {
-  const { colors } = useTheme();
   return (
-    <Drawer.Navigator
-      drawerContent={props => <CustomDrawer {...props} />}
-      screenOptions={{
-        headerShown: false,
-        drawerActiveBackgroundColor: colors.background,
-        drawerActiveTintColor: colors.primary,
-        drawerInactiveTintColor: colors.border,
-        drawerLabelStyle: {
-          marginLeft: -25,
-          fontFamily: 'Roboto-Medium',
-          fontSize: 15,
-        },
-      }}>
-      <Drawer.Screen
-        name="Home"
-        component={TabNavigator}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={22} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="person-outline" size={22} color={color} />
-          ),
-        }}
-      />
-      {/* <Drawer.Screen
-        name="Messages"
-        component={MessagesScreen}
-        options={{
-          drawerIcon: ({color}) => (
-            <Ionicons name="chatbox-ellipses-outline" size={22} color={color} />
-          ),
-        }}
-      /> */}
-      <Drawer.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="settings-outline" size={22} color={color} />
-          ),
-        }}
-      />
-    </Drawer.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={DrawerNavigator} />
+      <Stack.Screen name="Workout" component={WorkoutScreen} />
+      <Stack.Screen name="Completed" component={CompletedScreen} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+    </Stack.Navigator>
   );
 };
 
