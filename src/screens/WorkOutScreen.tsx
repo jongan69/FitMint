@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import CancelButton from '../components/CancelButton';
 
 // destructured
 function WorkoutScreen({ navigation }) {
@@ -101,6 +102,8 @@ function WorkoutScreen({ navigation }) {
     // WORKOUT COMPLETE
     // if(exerciseCount === 13) 
     //     alert("all done");
+
+   
        
    
     
@@ -110,7 +113,7 @@ function WorkoutScreen({ navigation }) {
     // const workoutTimeInSeconds = 420;
     // const exerciseIntervalsInSeconds = 29;
     // const breakTimeInSeconds = 9;
-    // const defaultCancelTime = 5;
+     const defaultCancelTime = 5;
 
     // // Use to test faster
     // // const workoutTimeInSeconds = 50;
@@ -125,9 +128,9 @@ function WorkoutScreen({ navigation }) {
     // const [onBreak, setBreak] = useState(false);
 
     // // For Hold To Cancel
-    // const [canceling, setCanceling] = useState(false);
-    // const [isCanceled, setIsCanceled] = useState(false);
-    // const [cancelTime, setCancelTime] = useState(defaultCancelTime);
+    //  const [canceling, setCanceling] = useState(false);
+    //  const [isCanceled, setIsCanceled] = useState(false);
+    //  const [cancelTime, setCancelTime] = useState(defaultCancelTime);
 
 
     // // Cancel Workout Timer
@@ -144,7 +147,7 @@ function WorkoutScreen({ navigation }) {
     //         if (!canceling) {
     //             clearInterval(cancelCount)
     //             setIsCanceled(false)
-    //         }
+    //         }react native 
     //     }, 1000);
 
     //     if (cancelTime === 0) {
@@ -268,20 +271,24 @@ function WorkoutScreen({ navigation }) {
                           duration={29}
                           colors={['#00FF00',  '#FF0000']}
                           colorsTime={[29, 0]}
+                          size={240}
+    
                           onComplete={() => {
                             // do your stuff here
                             return { shouldRepeat: true, delay: 1 } // repeat animation in 1 seconds
                           }}
                         >
+                          
                           {({ remainingTime }) => <Text style={styles.numberText}>{excerciseTime}</Text>}
                         </CountdownCircleTimer>
                         {/* <Text style={styles.bodyText}>Countdown: {excerciseTime} seconds</Text> */}
                        
                        
                       
-                        <Button
-                         title="Cancel workout"
-                         onPress={() => navigation.navigate('Workout')}
+                        <CancelButton
+                         label="Cancel workout"
+                         onPress={() => navigation.navigate('Main')}
+
                          />
                         
                        
@@ -293,6 +300,7 @@ function WorkoutScreen({ navigation }) {
                           isPlaying
                           duration={10}
                           colors="#0080ff"
+                          size={240}
                           onComplete={() => {
                             // do your stuff here
                             return { shouldRepeat: false  } // repeat animation in 1.5 seconds
@@ -337,7 +345,9 @@ const styles = StyleSheet.create({
     titleText : {
         fontSize: 30,
         fontWeight: 'bold',
-        fontFamily: 'Helvetica'
+        fontFamily: 'Helvetica',
+        paddingTop: 10,
+        paddingBottom : 40
 
     },
     bodyText: {
