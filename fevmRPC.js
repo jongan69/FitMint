@@ -3,7 +3,7 @@ import 'text-encoding';
 
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
-import { fa }  from "@glif/filecoin-address";
+const fa = require("@glif/filecoin-address");
 
 import { DAPP_CONTRACT } from "@env"
 
@@ -45,19 +45,18 @@ const getTokens = async (key) => {
     console.log(chainId) // 42
     console.log(provider);
     console.log(DAPP_CONTRACT);
-    const signer = wallet.connect(provider);
+
     const f4Address = fa.newDelegatedEthAddress(DAPP_CONTRACT).toString();
-    console.log("Ethereum address (this addresss should work for most tools):", DAPP_CONTRACT);
-    console.log("f4address (also known as t4 address on testnets):", f4Address);
-   //store taskargs as useable variables
+    console.log("Ethereum Contract address (this addresss should work for most tools):", DAPP_CONTRACT);
+    console.log("f4address Contract (also known as t4 address on testnets):", f4Address);
+   
+    //store taskargs as useable variables
    const account = cleanKey
    const networkId = networkInfo.networks.hyperspace.chainId
-   console.log("Reading FitMints owned by", account, "on network", networkId)
+   console.log("Reading FitMints owned by", wallet, "on network", networkId)
    
-   //create a new wallet instance
-//    const wallet = new ethers.Wallet(account, FevmProviderUrl)
 
-   const FitMints = await ethers.Contract(DAPP_CONTRACT, ContractABI.abi, provider)
+   const FitMints = await ethers.Contract(f4Address, ContractABI.abi, provider)
    //This is what we will call to interact with the contract
 //    const FitMintsContract = await FitMints.attach(contractAddr)
     
