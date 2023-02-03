@@ -52,8 +52,9 @@ const LoginScreen = ({ navigation }) => {
   const nhost = useNhostClient();
 
 
-  const loggedin = useSelector((state: RootState) => state.login.loggedIn); 
+  const loggedin = useSelector((state: RootState) => state.login.loggedIn);
   const dispatch = useDispatch();
+  
   const GuestLogin = () => {
     dispatch(setGuest(true));
     console.log(loggedin)
@@ -63,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
   // Then attempts to generate a wallet address from the private key from sdk
   // Then use nHost to create User Account with wallet address as the password
   // needs added randomness for security
-  
+
   const Login = async (Provider: string) => {
     const id = toast.loading("Registering with provider...");
     setTimeout(() => {
@@ -104,31 +105,9 @@ const LoginScreen = ({ navigation }) => {
 
           // Create Toast for private key generating wallet address
           if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
-
           setAddress(wallet?.address);
-          // setEmail(info?.userInfo?.email);
-          // setCurrentWalletAddress(wallet?.address);
-          // console.log("Logged In", currentWalletAddress);
-          // toast.success(`Logged In: ${currentWalletAddress}`);
-
-          if (currentWalletAddress.length > 0 && email.length > 0) {
-            try {
-              nhost.auth
-                .signIn({
-                  email: email,
-                  password: currentWalletAddress,
-                })
-                .then((result: any) => console.log(result))
-                .then(() =>
-                  toast.success("Signed In Successfully!", {
-                    width: 300,
-                  })
-                );
-            } catch {
-              toast.error("There was an error saving your account!");
-            }
-          }
         });
+
       return info;
     } catch (e: any) {
       toast.error(e.toString());
@@ -144,8 +123,7 @@ const LoginScreen = ({ navigation }) => {
         console.log(
           `Wallet Entry ${address} was valid, call or create user in DB: `
         );
-        toast.success("Logging in with email");
-
+        toast.success("Logging in with email")
         const web3auth = new Web3Auth(WebBrowser, {
           clientId: WEB3AUTH_CLIENT_ID,
           network: OPENLOGIN_NETWORK.TESTNET, // or other networks
@@ -161,7 +139,6 @@ const LoginScreen = ({ navigation }) => {
             },
           },
         });
-
         const info = await web3auth
           .login({
             loginProvider: "email_passwordless",
@@ -174,32 +151,13 @@ const LoginScreen = ({ navigation }) => {
           })
           .then((info: any) => {
             console.log("DATA FROM WEB3 AUTH:", info);
-            const ethersProvider =
-              ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
-            // setUserInfo(info);
-            // setKey(info.privKey);
+            const ethersProvider = ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
             const wallet = new ethers.Wallet(info.privKey, ethersProvider);
             if (wallet) toast.success(`Created wallet!: ${wallet}`);
             // Create Toast for private key generating
             console.log("Logged In", wallet.address);
             toast.success(`Logged In: ${wallet.address}`);
             setAddress(wallet.address);
-            // setEmail(email);
-            // setCurrentWalletAddress(wallet.address);
-
-            if (currentWalletAddress?.length > 0 && email?.length > 0) {
-              try {
-                nhost.auth
-                  .signUp({ email, password: currentWalletAddress })
-                  .then(() =>
-                    toast.success(`Account Created Successfully!`, {
-                      width: 300,
-                    })
-                  );
-              } catch {
-                toast.error("There was an error saving your account!");
-              }
-            }
           });
         return info;
       } else {
@@ -250,18 +208,6 @@ const LoginScreen = ({ navigation }) => {
             value={email}
             onChangeText={(value: string) => setEmail(value)} inputType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} />
 
-          {/* <InputField
-          label={error ? 'Error Please Try again' : 'Wallet Address'}
-          icon={<Ionicons
-            name="wallet"
-            size={20}
-            color={colors.primary}
-            style={{ marginRight: 5 }} />}
-          value={address}
-          onChangeText={(value: string) => setAddress(value)}
-          inputType="wallet"
-          keyboardType={undefined} /> */}
-
           <CustomButton
             label={"Login"}
             onPress={() => { }}
@@ -285,7 +231,7 @@ const LoginScreen = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => { }}
               style={{
                 backgroundColor: colors.primary,
                 borderColor: colors.border,
