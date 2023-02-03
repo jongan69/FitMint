@@ -54,7 +54,7 @@ function RootNavigator() {
 
   React.useEffect(() => {
     // dispatch(setLogin(true));
-    if (loggedin && !guest) {
+    if (typeof loggedin === 'object' && !guest) {
       toast.success("Welcome to the app!", {
         width: 300,
       });
@@ -70,7 +70,7 @@ function RootNavigator() {
   return (
     <>
       <Stack.Navigator>
-        {!loggedin && !guest ? (
+        {typeof loggedin !== 'object' && !guest ? (
           <Stack.Screen
             name="Auth"
             component={AuthStack}

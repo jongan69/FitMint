@@ -1,4 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '.';
+
 
 // Define the Thunk
 interface LoginData {
@@ -7,7 +9,7 @@ interface LoginData {
   first_name: string;
   last_name: string;
   avatar: string;
-  loggedIn: boolean,
+  isloggedIn: boolean,
   guest: boolean,
   loading: boolean
 }
@@ -21,13 +23,20 @@ export const backendLogin = createAsyncThunk('login/backendLogin', async () => {
 export const loginAdapter = createEntityAdapter<LoginData>();
 
 
+
+const initialState = {
+    loading: false,
+    loggedIn: Object,
+    guest: false
+}
+
 // Use the Thunk
 const loginSlice = createSlice({
   name: 'login',
 
   initialState: {
     loading: false,
-    loggedIn: null,
+    loggedIn: Object,
     guest: false
   },
 
@@ -35,23 +44,44 @@ const loginSlice = createSlice({
     setLogin(state, action: PayloadAction<any>) {
       state.loggedIn = action.payload;
       state.loading = false,
-      state.guest = false;
+        state.guest = false;
     },
 
     setGuest(state, action: PayloadAction<boolean>) {
       state.guest = action.payload;
       state.loading = false,
-      state.loggedIn = null;
+      state.loggedIn = state.loggedIn;
     },
 
-    setLogout(state, action: PayloadAction<boolean>) {
-      state.loggedIn = null;
-      state.loading = false,
-      state.guest = false;
+    setLogout(state) {
+      state.guest = initialState.guest,
+      state.loading = initialState.loading ,
+      state.loggedIn = initialState.loggedIn
     }
-  }
+  },
+
+  // extraReducers: (builder) => {
+  //   builder.addCase(backendLogin.pending, (state) => {
+  //     state.loading = true;
+  //   });
+  //   builder.addCase(backendLogin.fulfilled, (state, action) => {
+  //     loginAdapter.setAll(state, action.payload);
+  //     state.loading = false;
+  //   });
+  //   builder.addCase(backendLogin.rejected, (state) => {
+  //     state.loading = false;
+  //   });
+  // }
 
 });
+
+// export const {
+//   selectById: selectUserById,
+//   selectIds: selectUserIds,
+//   selectEntities: selectUserEntities,
+//   selectAll: selectAllUsers,
+//   selectTotal: selectTotalUsers
+// } = loginAdapter.getSelectors((state: RootState) => state.login.loggedIn);
 
 export const { setLogin, setLogout, setGuest } = loginSlice.actions;
 export default loginSlice.reducer;

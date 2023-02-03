@@ -55,11 +55,11 @@ const CustomDrawer = (
   const isGuest = useSelector((state: RootState) => state.login.guest);
   
   
-  const userType = loggedin && !isGuest ? `Member` : `Guest`;
-  console.log(`data is ${userType} ${isGuest}`)
+  const userType = !isGuest ? `Member` : `Guest`;
+  console.log(`data is ${JSON.stringify(loggedin)} ${isGuest}`)
 
   const logout = () => {
-    dispatch(setLogout(false));
+    dispatch(setLogout());
     console.log(loggedin)
     toast.error("Logged Out", {
       width: 300,
@@ -121,7 +121,7 @@ const CustomDrawer = (
               marginBottom: 5,
             }}
           >
-            {userType === 'Member' ? "Hi Isabella!" : "No username"}
+            {userType === 'Member' ? 'Test' : "No username"}
           </Text>
           <Text
             style={{

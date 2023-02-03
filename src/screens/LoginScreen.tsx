@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
           // Create Toast for private key generating wallet address
           if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
           setAddress(wallet?.address);
-          dispatch(setLogin(info));
+          dispatch(setLogin({info, wallet}));
         });
 
       return info;
@@ -157,6 +157,7 @@ const LoginScreen = ({ navigation }) => {
             console.log("Logged In", wallet.address);
             toast.success(`Logged In: ${wallet.address}`);
             setAddress(wallet.address);
+            dispatch(setLogin({info, wallet}));
           });
         return info;
       } else {
