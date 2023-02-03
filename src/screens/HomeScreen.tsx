@@ -3,7 +3,8 @@ import {
   SafeAreaView,
   Button,
   View,
-  Text
+  Text,
+  Image
 } from "react-native";
 
 export default function HomeScreen({ navigation }) {
@@ -25,7 +26,11 @@ export default function HomeScreen({ navigation }) {
         title="Settings"
         onPress={() => navigation.navigate('Settings')}
       />
+      <View style={{ justifyContent: 'center', paddingTop : 50}}>
+                <Image  style={{ height : 440, resizeMode : 'contain', opacity : 0.7}} source={require('../assets/images/fitness-people-cartoon-characters-.jpg')} />
+       </View>
     </View>
+     
 
   );
 }
