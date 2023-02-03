@@ -132,7 +132,7 @@ const Payment = ({ navigation }) => {
                   fontSize: 19,
                 }}
               >
-                Kudos Token:
+                FileCoin NFT's:
               </Text>
 
               <Text
@@ -142,7 +142,7 @@ const Payment = ({ navigation }) => {
                   fontSize: 19,
                 }}
               >
-                Eth:
+                tFils:
               </Text>
             </View>
           </View>
