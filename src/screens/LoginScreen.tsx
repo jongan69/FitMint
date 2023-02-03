@@ -22,7 +22,7 @@ import FacebookSVG from "../assets/images/misc/facebook.svg";
 // import TwitterSVG from '../assets/images/misc/twitter.svg';
 
 // WEB3 SDK + Tools
-// import { WEB3AUTH_CLIENT_ID, WEB3AUTH_PROVIDERURL } from "@env";
+import { WEB3AUTH_CLIENT_ID, WEB3AUTH_PROVIDERURL } from "@env";
 import Web3Auth, { OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 import * as Linking from "expo-linking";
 import { Buffer } from "buffer";
@@ -42,18 +42,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setGuest } from '../store/login';
 
 // Nhost
-import { useNhostClient } from "@nhost/react";
+// import { useNhostClient } from "@nhost/react";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   let emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
   const { colors } = useTheme();
-  const nhost = useNhostClient();
 
-
-  const loggedin = useSelector((state: RootState) => state.login.loggedIn); 
+  const loggedin = useSelector((state: RootState) => state.login.loggedIn);
   const dispatch = useDispatch();
+
   const GuestLogin = () => {
     dispatch(setGuest(true));
     console.log(loggedin)
@@ -63,77 +62,63 @@ const LoginScreen = ({ navigation }) => {
   // Then attempts to generate a wallet address from the private key from sdk
   // Then use nHost to create User Account with wallet address as the password
   // needs added randomness for security
-  // const Login = async (Provider: string) => {
-  //   const id = toast.loading("Registering with provider...");
-  //   setTimeout(() => {
-  //     toast.dismiss(id);
-  //   }, 3000);
-  //   try {
-  //     console.log("Logging in");
 
-  //     const web3auth = new Web3Auth(WebBrowser, {
-  //       clientId: WEB3AUTH_CLIENT_ID,
-  //       network: OPENLOGIN_NETWORK.TESTNET, // or other networks
-  //       whiteLabel: {
-  //         name: Constants?.manifest?.name,
-  //         logoLight: "https://web3auth.io/images/logo-light.png",
-  //         logoDark: "https://web3auth.io/images/logo-dark.png",
-  //         defaultLanguage: "en",
-  //         disclaimerHide: true,
-  //         dark: true,
-  //         theme: {
-  //           primary: colors.primary,
-  //         },
-  //       },
-  //     });
+  const Login = async (Provider: string) => {
+    const id = toast.loading("Registering with provider...");
+    setTimeout(() => {
+      toast.dismiss(id);
+    }, 3000);
+    try {
+      console.log("Logging in");
 
-  //     const info = await web3auth
-  //       .login({
-  //         loginProvider: Provider,
-  //         redirectUrl: resolvedRedirectUrl,
-  //         mfaLevel: "none",
-  //         curve: "secp256k1",
-  //       })
-  //       .then((info: any) => {
-  //         console.log("DATA FROM WEB3 AUTH:", info);
-  //         const ethersProvider = ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
-  //         // setUserInfo(info);
-  //         // setKey(info.privKey);
-  //         const wallet = new ethers.Wallet(info.privKey, ethersProvider);
+      const web3auth = new Web3Auth(WebBrowser, {
+        clientId: WEB3AUTH_CLIENT_ID,
+        network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+        whiteLabel: {
+          name: Constants?.manifest?.name,
+          logoLight: "https://web3auth.io/images/logo-light.png",
+          logoDark: "https://web3auth.io/images/logo-dark.png",
+          defaultLanguage: "en",
+          disclaimerHide: true,
+          dark: true,
+          theme: {
+            primary: colors.primary,
+          },
+        },
+      });
 
-  //         // Create Toast for private key generating wallet address
-  //         if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
+      const info = await web3auth
+        .login({
+          loginProvider: Provider,
+          redirectUrl: resolvedRedirectUrl,
+          mfaLevel: "none",
+          curve: "secp256k1",
+        })
+        .then((info: any) => {
+          console.log("DATA FROM WEB3 AUTH:", info);
+          const ethersProvider = ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
+          // setUserInfo(info);
+          // setKey(info.privKey);
+          const wallet = new ethers.Wallet(info.privKey, ethersProvider);
 
-  //         setAddress(wallet?.address);
-  //         // setEmail(info?.userInfo?.email);
-  //         // setCurrentWalletAddress(wallet?.address);
-  //         // console.log("Logged In", currentWalletAddress);
-  //         // toast.success(`Logged In: ${currentWalletAddress}`);
+          // Create Toast for private key generating wallet address
+          if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
+          setAddress(wallet?.address);
 
-  //         if (currentWalletAddress.length > 0 && email.length > 0) {
-  //           try {
-  //             nhost.auth
-  //               .signIn({
-  //                 email: email,
-  //                 password: currentWalletAddress,
-  //               })
-  //               .then((result: any) => console.log(result))
-  //               .then(() =>
-  //                 toast.success("Signed In Successfully!", {
-  //                   width: 300,
-  //                 })
-  //               );
-  //           } catch {
-  //             toast.error("There was an error saving your account!");
-  //           }
-  //         }
-  //       });
-  //     return info;
-  //   } catch (e: any) {
-  //     toast.error(e.toString());
-  //     console.log(e);
-  //   }
-  // };
+          // deleting certain non-serializable values bc redux
+          // let serializableInfo = delete info._signingKey
+          // serializableInfo = delete info.register
+
+          const profileData = Object.assign(info, wallet);
+          dispatch(setLogin(profileData));
+        });
+
+      return info;
+    } catch (e: any) {
+      toast.error(e.toString());
+      console.log(e);
+    }
+  };
 
   // Use Default Passwordless email sign in
   const DefaultLogin = async (email: string) => {
@@ -143,8 +128,7 @@ const LoginScreen = ({ navigation }) => {
         console.log(
           `Wallet Entry ${address} was valid, call or create user in DB: `
         );
-        toast.success("Logging in with email");
-
+        toast.success("Logging in with email")
         const web3auth = new Web3Auth(WebBrowser, {
           clientId: WEB3AUTH_CLIENT_ID,
           network: OPENLOGIN_NETWORK.TESTNET, // or other networks
@@ -160,7 +144,6 @@ const LoginScreen = ({ navigation }) => {
             },
           },
         });
-
         const info = await web3auth
           .login({
             loginProvider: "email_passwordless",
@@ -173,32 +156,24 @@ const LoginScreen = ({ navigation }) => {
           })
           .then((info: any) => {
             console.log("DATA FROM WEB3 AUTH:", info);
-            const ethersProvider =
-              ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
-            // setUserInfo(info);
-            // setKey(info.privKey);
+            const ethersProvider = ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
             const wallet = new ethers.Wallet(info.privKey, ethersProvider);
             if (wallet) toast.success(`Created wallet!: ${wallet}`);
             // Create Toast for private key generating
             console.log("Logged In", wallet.address);
             toast.success(`Logged In: ${wallet.address}`);
             setAddress(wallet.address);
-            // setEmail(email);
-            // setCurrentWalletAddress(wallet.address);
 
-            if (currentWalletAddress?.length > 0 && email?.length > 0) {
-              try {
-                nhost.auth
-                  .signUp({ email, password: currentWalletAddress })
-                  .then(() =>
-                    toast.success(`Account Created Successfully!`, {
-                      width: 300,
-                    })
-                  );
-              } catch {
-                toast.error("There was an error saving your account!");
-              }
-            }
+
+            // deleting certain non-serializable values bc redux
+            // let serializableInfo = delete info._signingKey
+            // serializableInfo = delete info.register
+            // Combines wallet info Object and web3auth object and dispatches to persisted state
+            const profileData = Object.assign(info, wallet);
+            dispatch(setLogin(profileData));
+
+
+
           });
         return info;
       } else {
@@ -249,21 +224,9 @@ const LoginScreen = ({ navigation }) => {
             value={email}
             onChangeText={(value: string) => setEmail(value)} inputType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} />
 
-          {/* <InputField
-          label={error ? 'Error Please Try again' : 'Wallet Address'}
-          icon={<Ionicons
-            name="wallet"
-            size={20}
-            color={colors.primary}
-            style={{ marginRight: 5 }} />}
-          value={address}
-          onChangeText={(value: string) => setAddress(value)}
-          inputType="wallet"
-          keyboardType={undefined} /> */}
-
           <CustomButton
             label={"Login"}
-            onPress={() => { }}
+            onPress={DefaultLogin}
           />
 
           <Text
@@ -284,7 +247,7 @@ const LoginScreen = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => Login("google")}
               style={{
                 backgroundColor: colors.primary,
                 borderColor: colors.border,
@@ -299,7 +262,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("apple")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,

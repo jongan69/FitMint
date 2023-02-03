@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ScrollViewProps,
+  Alert,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -51,23 +52,29 @@ const CustomDrawer = (
   const { colors } = useTheme();
   const [balance, setBalance] = React.useState(0);
   const dispatch = useDispatch();
-  const loggedin = useSelector((state: RootState) => state.login.loggedIn); 
   const isGuest = useSelector((state: RootState) => state.login.guest);
-  
-  
-  const userType = loggedin && !isGuest ? `Member` : `Guest`;
-  console.log(`data is ${userType} ${isGuest}`)
+
+  const loggedin = useSelector((state: RootState) => state.login.loggedIn);
+  for (const [key, value] of Object.entries(loggedin)) {
+    console.log(`${key}: ${value}`);
+  }
+
+
+
+  const userType = !isGuest ? `Member` : `Guest`;
 
   const logout = () => {
-    dispatch(setLogout(false));
+    dispatch(setLogout());
     console.log(loggedin)
     toast.error("Logged Out", {
       width: 300,
     });
   };
 
-  function shareApp(url: string) {
-    WebBrowser.openBrowserAsync(url);
+  function shareApp(url: any) {
+    typeof url === 'string'
+      ? WebBrowser.openBrowserAsync(url)
+      : Alert.alert("No Url Set!")
   }
 
   const getBalance = async (key: string) => {
@@ -121,7 +128,7 @@ const CustomDrawer = (
               marginBottom: 5,
             }}
           >
-            {userType === 'Member' ? "Hi Isabella!" : "No username"}
+            {userType === 'Member' ? 'Test' : "No username"}
           </Text>
           <Text
             style={{
@@ -174,7 +181,7 @@ const CustomDrawer = (
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        <TouchableOpacity onPress={() => { shareApp(Constants.expoConfig?.githubUrl) }} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity onPress={() => { shareApp(Constants?.expoConfig?.githubUrl) }} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="share-social-outline" size={22} />
             <Text

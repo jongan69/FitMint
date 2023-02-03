@@ -34,8 +34,8 @@ fileNames.map((fileName) => {
   if (compiled) {
     console.log(`Compiled ${JSON.stringify(compiled)}`)
   }
-  const contracts = Object.keys(compiled.contracts[fileName]);
-  contracts.map((contract) => {
+  const contracts = Object?.keys(compiled?.contracts[fileName]);
+  contracts?.map((contract) => {
     fs.outputJsonSync(
       path.resolve(buildPath, contract + ".json"),
       compiled.contracts[fileName][contract]
