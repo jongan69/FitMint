@@ -74,11 +74,11 @@ React Native Work:
 
 - [x] Expo React Native App
 - [x] Web3Auth - React Native SDK
-- [x] Add Redux Thunk
+- [x] Add Redux store
 - [x] Switched Context with Redux Store
 - [x] Create all redux slices w/ actions
 - [x] Replace Reducer Functions with Secure Store Functions
-- [->] Create 7 Minute Workout app in React Native
+- [x] Create 7 Minute Workout app in React Native
 - [->] Connect Mobile UI to Smart Contract Minting and Getting Functions
 - [->] Create Feed for all failed and minted workouts
 
