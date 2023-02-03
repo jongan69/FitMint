@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ScrollViewProps,
+  Alert,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -51,12 +52,16 @@ const CustomDrawer = (
   const { colors } = useTheme();
   const [balance, setBalance] = React.useState(0);
   const dispatch = useDispatch();
-  const loggedin = useSelector((state: RootState) => state.login.loggedIn); 
   const isGuest = useSelector((state: RootState) => state.login.guest);
-  
-  
+
+  const loggedin = useSelector((state: RootState) => state.login.loggedIn);
+  for (const [key, value] of Object.entries(loggedin)) {
+    console.log(`${key}: ${value}`);
+  }
+
+
+
   const userType = !isGuest ? `Member` : `Guest`;
-  console.log(`data is ${JSON.stringify(loggedin)} ${isGuest}`)
 
   const logout = () => {
     dispatch(setLogout());
@@ -66,8 +71,10 @@ const CustomDrawer = (
     });
   };
 
-  function shareApp(url: string) {
-    WebBrowser.openBrowserAsync(url);
+  function shareApp(url: any) {
+    typeof url === 'string'
+      ? WebBrowser.openBrowserAsync(url)
+      : Alert.alert("No Url Set!")
   }
 
   const getBalance = async (key: string) => {
@@ -174,7 +181,7 @@ const CustomDrawer = (
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        <TouchableOpacity onPress={() => { shareApp(Constants.expoConfig?.githubUrl) }} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity onPress={() => { shareApp(Constants?.expoConfig?.githubUrl) }} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="share-social-outline" size={22} />
             <Text

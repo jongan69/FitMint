@@ -52,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
   const loggedin = useSelector((state: RootState) => state.login.loggedIn);
   const dispatch = useDispatch();
-  
+
   const GuestLogin = () => {
     dispatch(setGuest(true));
     console.log(loggedin)
@@ -104,7 +104,13 @@ const LoginScreen = ({ navigation }) => {
           // Create Toast for private key generating wallet address
           if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
           setAddress(wallet?.address);
-          dispatch(setLogin({info, wallet}));
+
+          // deleting certain non-serializable values bc redux
+          // let serializableInfo = delete info._signingKey
+          // serializableInfo = delete info.register
+
+          const profileData = Object.assign(info, wallet);
+          dispatch(setLogin(profileData));
         });
 
       return info;
@@ -157,7 +163,17 @@ const LoginScreen = ({ navigation }) => {
             console.log("Logged In", wallet.address);
             toast.success(`Logged In: ${wallet.address}`);
             setAddress(wallet.address);
-            dispatch(setLogin({info, wallet}));
+
+
+            // deleting certain non-serializable values bc redux
+            // let serializableInfo = delete info._signingKey
+            // serializableInfo = delete info.register
+            // Combines wallet info Object and web3auth object and dispatches to persisted state
+            const profileData = Object.assign(info, wallet);
+            dispatch(setLogin(profileData));
+
+
+
           });
         return info;
       } else {

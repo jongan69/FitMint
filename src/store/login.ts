@@ -1,28 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '.';
-
-
-// Define the Thunk
-interface LoginData {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-  isloggedIn: boolean,
-  guest: boolean,
-  loading: boolean
-}
-
-export const backendLogin = createAsyncThunk('login/backendLogin', async () => {
-  const response = await fetch('https://reqres.in/api/users?delay=1');
-  console.log('Trying to log user in on backend')
-  return (await response.json()).data as LoginData[];
-});
-
-export const loginAdapter = createEntityAdapter<LoginData>();
-
-
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
     loading: false,
@@ -35,9 +11,9 @@ const loginSlice = createSlice({
   name: 'login',
 
   initialState: {
-    loading: false,
-    loggedIn: Object,
-    guest: false
+    loading: initialState.loading,
+    loggedIn: initialState.loggedIn,
+    guest: initialState.guest
   },
 
   reducers: {
@@ -60,28 +36,8 @@ const loginSlice = createSlice({
     }
   },
 
-  // extraReducers: (builder) => {
-  //   builder.addCase(backendLogin.pending, (state) => {
-  //     state.loading = true;
-  //   });
-  //   builder.addCase(backendLogin.fulfilled, (state, action) => {
-  //     loginAdapter.setAll(state, action.payload);
-  //     state.loading = false;
-  //   });
-  //   builder.addCase(backendLogin.rejected, (state) => {
-  //     state.loading = false;
-  //   });
-  // }
-
 });
 
-// export const {
-//   selectById: selectUserById,
-//   selectIds: selectUserIds,
-//   selectEntities: selectUserEntities,
-//   selectAll: selectAllUsers,
-//   selectTotal: selectTotalUsers
-// } = loginAdapter.getSelectors((state: RootState) => state.login.loggedIn);
 
 export const { setLogin, setLogout, setGuest } = loginSlice.actions;
 export default loginSlice.reducer;
