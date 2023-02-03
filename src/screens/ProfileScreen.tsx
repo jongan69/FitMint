@@ -85,7 +85,7 @@ const ProfileScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         {showPrivateKey ? (
-          <Text style={[{ color: colors.text }, styles.textBox]}>{key ? key : "No Key"}</Text>
+          <Text style={[{ color: colors.text }, styles.textBox]}>{profile.length > 0 ? JSON.stringify(getField("address")[1]): "Private Key"}</Text>
         ) : (
           <></>
         )}
