@@ -106,7 +106,10 @@ function WorkoutScreen({ navigation }) {
 
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      <Text style={styles.timerText}>{workoutTime} to go!</Text>
+      <Text style={styles.titleText}>
+        Exercise #{exerciseCount}: {exerciseNames[exerciseCount - 1]}
+      </Text>
+
 
       {!onBreak ? (
         <>
@@ -116,9 +119,8 @@ function WorkoutScreen({ navigation }) {
             width: 300,
           }}
             source={images[exerciseCount - 1]} />
-          <Text style={styles.titleText}>
-            Exercise #{exerciseCount}: {exerciseNames[exerciseCount - 1]}
-          </Text>
+
+          <Text style={styles.timerText}>{workoutTime} to go!</Text>
 
           <CountdownCircleTimer
             isPlaying
