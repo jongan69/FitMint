@@ -26,6 +26,7 @@ export default function useCachedResources() {
           'Ionicons': require('react-native-vector-icons/Fonts/Ionicons.ttf'),
           'Feather': require('react-native-vector-icons/Fonts/Feather.ttf'),
           'FontAwesome5Free-Solid': require('react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf'),
+          'Material Icons': require('react-native-vector-icons/Fonts/MaterialIcons.ttf'),
         });
 
       } catch (e) {

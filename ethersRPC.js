@@ -9,7 +9,7 @@ import { DAPP_CONTRACT } from "@env"
 
 // or just use vscode solidity extension to compile:
 // https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity
-import * as ContractABI from './bin/contracts/FitMint.abi'
+import * as ContractABI from './bin/contracts/FitMint.json'
 
 // 3. Deploy the contract
 // 4. Use ABI + Contract Deploy address to Interface

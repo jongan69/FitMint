@@ -27,25 +27,25 @@ const loginSlice = createSlice({
 
   initialState: {
     loading: false,
-    loggedIn: false,
-    guest: true
+    loggedIn: null,
+    guest: false
   },
 
   reducers: {
-    setLogin(state, action: PayloadAction<boolean>) {
+    setLogin(state, action: PayloadAction<any>) {
       state.loggedIn = action.payload;
       state.loading = false,
-      state.guest = !action.payload;
+      state.guest = false;
     },
 
     setGuest(state, action: PayloadAction<boolean>) {
       state.guest = action.payload;
       state.loading = false,
-      state.loggedIn = !action.payload;
+      state.loggedIn = null;
     },
 
     setLogout(state, action: PayloadAction<boolean>) {
-      state.loggedIn = action.payload;
+      state.loggedIn = null;
       state.loading = false,
       state.guest = false;
     }

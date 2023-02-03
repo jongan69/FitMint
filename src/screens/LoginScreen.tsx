@@ -42,15 +42,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setGuest } from '../store/login';
 
 // Nhost
-import { useNhostClient } from "@nhost/react";
+// import { useNhostClient } from "@nhost/react";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   let emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
   const { colors } = useTheme();
-  const nhost = useNhostClient();
-
 
   const loggedin = useSelector((state: RootState) => state.login.loggedIn);
   const dispatch = useDispatch();
@@ -106,6 +104,7 @@ const LoginScreen = ({ navigation }) => {
           // Create Toast for private key generating wallet address
           if (wallet) toast.success(`Created wallet!: ${wallet?.address}`);
           setAddress(wallet?.address);
+          dispatch(setLogin(info));
         });
 
       return info;
@@ -210,7 +209,7 @@ const LoginScreen = ({ navigation }) => {
 
           <CustomButton
             label={"Login"}
-            onPress={() => { }}
+            onPress={DefaultLogin}
           />
 
           <Text
@@ -231,7 +230,7 @@ const LoginScreen = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => { }}
+              onPress={() => Login("google")}
               style={{
                 backgroundColor: colors.primary,
                 borderColor: colors.border,
@@ -246,7 +245,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("apple")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,
