@@ -1,9 +1,21 @@
 import '@ethersproject/shims';
+import 'text-encoding';
+
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
+import { fa }  from "@glif/filecoin-address";
 
 import { DAPP_CONTRACT } from "@env"
 
+const networkInfo = {
+    defaultNetwork: "hyperspace",
+    networks: {
+        hyperspace: {
+            chainId: 3141,
+            url: "https://api.hyperspace.node.glif.io/rpc/v1",
+        },
+    },
+}
 // To do for contract compile
 // 1. `yarn compile-contracts` WILL COMPILE ANY BASIC CONTRACTS
 // 2. Change import to the new artifacts/abi.json
@@ -21,48 +33,45 @@ global.Buffer = global.Buffer || Buffer;
 const EthproviderUrl = 'https://rpc.ankr.com/eth_goerli'; // Or your desired provider url
 const FevmProviderUrl = 'https://api.hyperspace.node.glif.io/rpc/v1'
 
-// These are your front end functions for interfacing the contract
-// I will be connecting these to the store:  if user has wallet, 
-// update store values w chain functions on internal/events
 
-// const getMyTasks = async (key) => {
-//   try {
-//     const provider = new ethers.getDefaultProvider(providerUrl);
-//     const wallet = new ethers.Wallet(key);
-//     const signer = wallet.connect(provider);
+const getTokens = async (key) => {
+  try {
+    let cleanKey = key.replace(/["]/g, "");
+    
+    let provider = new ethers.providers.JsonRpcProvider(FevmProviderUrl);
+    const wallet = new ethers.Wallet(cleanKey, provider);
 
+    const { chainId } = await provider.getNetwork()
+    console.log(chainId) // 42
+    console.log(provider);
+    console.log(DAPP_CONTRACT);
+    const signer = wallet.connect(provider);
+    const f4Address = fa.newDelegatedEthAddress(DAPP_CONTRACT).toString();
+    console.log("Ethereum address (this addresss should work for most tools):", DAPP_CONTRACT);
+    console.log("f4address (also known as t4 address on testnets):", f4Address);
+   //store taskargs as useable variables
+   const account = cleanKey
+   const networkId = networkInfo.networks.hyperspace.chainId
+   console.log("Reading FitMints owned by", account, "on network", networkId)
+   
+   //create a new wallet instance
+//    const wallet = new ethers.Wallet(account, FevmProviderUrl)
 
-//     const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-//     let myTasks = await TaskContract.getMyTasks();
-//     return myTasks;
+   const FitMints = await ethers.Contract(DAPP_CONTRACT, ContractABI.abi, provider)
+   //This is what we will call to interact with the contract
+//    const FitMintsContract = await FitMints.attach(contractAddr)
+    
+   //Call the getBalance method
+   let result = BigInt(await FitMints.balanceOf(account)).toString()
+   console.log("Amount of Mints owned by", account, "is", result)
+//    let mintedToken = await FitMints.getMintedTokenBalance()
+//    console.log(`Total amount of minted tokens is ${mintedToken}`)
 
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
-
-
-
-// const deleteTask = async (taskID, key) => {
-//   try {
-//     const provider = new ethers.getDefaultProvider(providerUrl);
-//     const wallet = new ethers.Wallet(key);
-//     const signer = wallet.connect(provider);
-
-//     const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-//     let deleted = await TaskContract.deleteTasks();
-//     console.log('Deleted', deleted)
-//     return allFavors;
-
-
-
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 
 // Other Useful RPC Functions 
 const getChainId = async () => {
@@ -134,6 +143,7 @@ const signMessage = async (key, message) => {
 };
 
 export default {
+  getTokens,
   getChainId,
   getAccounts,
   getBalance,

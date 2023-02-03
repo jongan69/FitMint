@@ -37,6 +37,8 @@ import { defaultImageUrl } from "../constants/Colors";
 
 import RPC from "../../ethersRPC"; // for using ethers.js
 
+import { truncate } from "../constants/Truncate";
+
 const CustomDrawer = (
   props:
     | (JSX.IntrinsicAttributes &
@@ -95,9 +97,11 @@ const CustomDrawer = (
     });
   };
 
-  // React.useEffect(() => {
-  //   getBalance(key);
-  // }, []);
+  React.useEffect(() => {
+    profile.length > 0
+      ? getBalance(JSON.stringify(getField("address")[1]))
+      : null
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -113,7 +117,7 @@ const CustomDrawer = (
         >
           <Image
             source={{
-              uri:  profile.length > 0 ?  getField("address")[7]?.profileImage : defaultImageUrl
+              uri: profile.length > 0 ? getField("address")[7]?.profileImage : defaultImageUrl
             }}
             style={{
               height: 80,
@@ -134,7 +138,7 @@ const CustomDrawer = (
               marginBottom: 5,
             }}
           >
-            {profile.length > 0 ?  getField("address")[7]?.name : {userType}}
+            {profile.length > 0 ? getField("address")[7]?.name : { userType }}
           </Text>
           <Text
             style={{
@@ -148,7 +152,7 @@ const CustomDrawer = (
               marginBottom: 5,
             }}
           >
-            {JSON.stringify(getField("address")[11])}
+
           </Text>
           <View style={{ flexDirection: "row" }}>
             <Text
@@ -177,7 +181,7 @@ const CustomDrawer = (
                 marginRight: 5,
               }}
             >
-              0
+              {truncate(JSON.stringify(getField("address")[11]).replace(/["]/g, ""), 10)}
             </Text>
             <FontAwesome5 name="wallet" size={14} color="#FFF" />
           </View>
