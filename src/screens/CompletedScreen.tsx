@@ -1,22 +1,34 @@
 import { toast } from '@backpackapp-io/react-native-toast';
 import { useTheme } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react'
 import { View, Text, Button } from 'react-native'
 import fevmRPC from '../../fevmRPC';
+import { RootStackParamList } from '../../types';
 
-const CompletedScreen = ({ route, navigation }) => {
+type CompletedScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Completed'
+>;
+
+type Props = {
+  navigation: CompletedScreenNavigationProp;
+  route: any
+};
+
+const CompletedScreen = ({ route, navigation }: Props) => {
   const { colors } = useTheme();
   const { exercises, exerciseTime, calories, address, key, isGuest } = route.params;
   const minutes = Math.floor(exerciseTime / 60);
   const [mint, setMint] = React.useState();
 
   useEffect(() => {
-    if(!isGuest && key){
+    if (!isGuest && key) {
       console.log("Starting Mint Process")
       callToMint()
     }
-  
-    return () => {}
+
+    return () => { }
   }, [])
 
   const callToMint = async () => {
@@ -37,13 +49,13 @@ const CompletedScreen = ({ route, navigation }) => {
       <Text style={{ color: colors.text }}>Congratulations!</Text>
       <Text style={{ color: colors.text }}>You Burned: {calories} Calories</Text>
       <Text style={{ color: colors.text }}>You completed the {minutes} Minute Workout</Text>
-      {exercises.map((exercise) => <Text style={{ color: colors.text }}>{exercise}</Text>)}
+      {exercises.map((exercise: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => <Text style={{ color: colors.text }}>{exercise}</Text>)}
 
       {!isGuest &&
         <>
           <Text style={{ color: colors.text }}>We're Minting you an NFT for your workout</Text>
           <Text style={{ color: colors.text }}>Wallet Receiving NFT: {address}</Text>
-          
+
         </>
       }
 

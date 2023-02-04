@@ -30,6 +30,8 @@ import Constants, { AppOwnership } from 'expo-constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from '../store/login';
 import { RootState } from '../store';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavParamList } from '../../types';
 global.Buffer = global.Buffer || Buffer;
 
 const scheme = Constants?.manifest?.slug;
@@ -38,23 +40,23 @@ const resolvedRedirectUrl =
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: scheme });
 
-// nHost SDK + Tools
-// import Layout from '../constants/Layout'
-// import { auth } from '../helpers/nhostSdk';
-// const deviceWidth = Layout.window.width;
 
+type RegisterScreenNavigationProp = NativeStackNavigationProp<
+  AuthNavParamList,
+  'Register'
+>;
 
+type Props = {
+  navigation: RegisterScreenNavigationProp;
+};
 
-const RegisterScreen: React.FunctionComponent = ({ navigation }) => {
+const RegisterScreen = ({ navigation }: Props) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState<string>("");
   let emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
   const loggedin = useSelector((state: RootState) => state.login.loggedIn);
   const dispatch = useDispatch();
-
   const [address, setAddress] = useState<string>("");
-
-
   const [error, setError] = useState(false)
 
   console.log(loggedin)

@@ -40,11 +40,23 @@ const resolvedRedirectUrl =
 import { RootState } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setGuest } from '../store/login';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AuthNavParamList } from "../../types";
 
 // Nhost
 // import { useNhostClient } from "@nhost/react";
 
-const LoginScreen = ({ navigation }) => {
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  AuthNavParamList,
+  'Login'
+>;
+
+type Props = {
+  navigation: LoginScreenNavigationProp;
+};
+
+
+const LoginScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   let emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;

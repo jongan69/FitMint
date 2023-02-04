@@ -1,7 +1,4 @@
-import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
-import ProfileImage from "../components/ProfileImage";
-import CustomSwitch from "../components/CustomSwitch";
 import {
   ScrollView,
   SafeAreaView,
@@ -22,8 +19,19 @@ import InputField from "../components/InputField";
 import { toast } from "@backpackapp-io/react-native-toast";
 import RPC from "../../ethersRPC"; // for using ethers.js
 import fevmRPC from "../../fevmRPC";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types";
 
-const Payment = ({ navigation }) => {
+type PaymentScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Payment'
+>;
+
+type Props = {
+  navigation: PaymentScreenNavigationProp;
+};
+
+const Payment = ({ navigation }: Props) => {
   const [balance, setBalance] = React.useState(0);
   const [mints, setMint] = React.useState(0);
 
@@ -197,7 +205,7 @@ const Payment = ({ navigation }) => {
                   ? getBalance(JSON.stringify(getField("address")[1]))
                   : null
               }} />
-              <InputField label={"Send To"} />
+              <InputField label={"Send To"} icon={undefined} inputType={undefined} keyboardType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} value={undefined} onChangeText={undefined} />
               <CustomButton label={"Send Transaction"} />
             </View>
           </View>

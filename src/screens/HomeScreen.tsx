@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from "react";
 import {
-  SafeAreaView,
   Button,
   View,
   Text
 } from "react-native";
+import { RootStackParamList } from "../../types";
 
-export default function HomeScreen({ navigation }) {
+
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Main'
+>;
+
+type Props = {
+  navigation: HomeScreenNavigationProp;
+};
+
+
+export default function HomeScreen({ navigation }: Props) {
   return (
 
     <View

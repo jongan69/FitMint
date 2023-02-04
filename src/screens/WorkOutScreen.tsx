@@ -1,13 +1,23 @@
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { useSelector } from 'react-redux';
+import { RootStackParamList } from '../../types';
 import { truncate } from '../constants/Truncate';
 import { RootState } from '../store';
 
-// destructured
-function WorkoutScreen({ navigation }) {
+type WorkoutScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Workout'
+>;
+
+type Props = {
+  navigation: WorkoutScreenNavigationProp;
+};
+
+function WorkoutScreen({ navigation }: Props) {
   const isGuest = useSelector((state: RootState) => state.login.guest);
 
   let profile: any[] = []
