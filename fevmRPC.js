@@ -68,46 +68,37 @@ const getTokens = async (key) => {
 const MintTokens = async (key, amount) => {
   try {
     let cleanKey = key.replace(/["]/g, "");
-    let provider = new ethers.providers.JsonRpcProvider(FevmProviderUrl);
+    let provider = new ethers.providers.JsonRpcProvider(FevmProviderUrl, networkInfo.networks.hyperspace);
     const wallet = new ethers.Wallet(cleanKey, provider);
     const signer = wallet.connect(provider);
 
-    const f4ActorAddress = fa.newActorAddress(DAPP_CONTRACT).toString();
     const f4ContractAddress = fa.newDelegatedEthAddress(DAPP_CONTRACT).toString();
     const f4WalletAddress = fa.newDelegatedEthAddress(wallet.address).toString();
+    const f4ActorAddress = fa.newActorAddress(wallet.address).toString();
 
     console.log("Ethereum Contract address in .env (this address should work for most tools):", DAPP_CONTRACT);
-    console.log("f4address Contract (also known as t4 address on testnets):", f4ActorAddress);
+    console.log("f4address Contract (also known as t4 address on testnets):", f4ContractAddress);
+
+    console.log("f4address Actor (also known as t4 address on testnets):", f4ActorAddress);
     console.log("f4address Wallet (also known as t4 address on testnets):", f4WalletAddress);
     console.log("Provider:", provider);
-    console.log("Wallet:", wallet);
-    console.log("Minting FitMint to", f4WalletAddress)
+    console.log("Eth Wallet:", wallet);
+    console.log("Minting FitMint");
 
-    const FitMints = new ethers.ContractFactory(DAPP_CONTRACT, signer)
+    const FitMints = new ethers.Contract(DAPP_CONTRACT, ContractABI.abi, signer)
     console.log("Contract:", FitMints)
 
     // //Call the mint method
-    // let result = FitMints.mint(f4WalletAddress, amount)
-    // if(result) console.log("Minting Token:", result)
-
-    // From FEVM Docs
-    // const SimpleCoin = await ethers.ContractFactory(ContractABI, byteCode, signer)
-    // //create a SimpleCoin contract instance 
-    // //this is what you will call to interact with the deployed contract
-    const simpleCoinContract = FitMints.attach(DAPP_CONTRACT)
-
-    // console.log("Sending:", amount, "SimpleCoin to", f4WalletAddress)
-
-    // //send transaction to call the sendCoin() method
-    const transaction = await simpleCoinContract.mint(f4WalletAddress, amount)
-    const receipt = await transaction.wait()
-    let result = BigInt(await simpleCoinContract.balanceOf(f4WalletAddress)).toString()
-    console.log("Total SimpleCoin at:", toAccount, "is", result)
-    return result
-
-
+    let result = await FitMints.mint(wallet.address, amount, { gasLimit: 30000 })
+    if(result) {
+      console.log("Minting Token:", result)
+      return result
+    } else {
+      return {"result": result.toString()}
+    }
   } catch (error) {
     console.log(error)
+    return error
   }
 }
 

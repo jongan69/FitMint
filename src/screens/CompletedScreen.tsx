@@ -8,11 +8,12 @@ const CompletedScreen = ({ route, navigation }) => {
   const { colors } = useTheme();
   const { exercises, exerciseTime, calories, address, key, isGuest } = route.params;
   const minutes = Math.floor(exerciseTime / 60);
+  const [mint, setMint] = React.useState();
 
   useEffect(() => {
     if(!isGuest && key){
       console.log("Starting Mint Process")
-      callToMint();
+      callToMint()
     }
   
     return () => {}
@@ -20,8 +21,9 @@ const CompletedScreen = ({ route, navigation }) => {
 
   const callToMint = async () => {
     const id2 = toast.loading("Minting...");
-    await fevmRPC.MintTokens(key, 1).then((mint) => {
-      console.log(mint);
+    await fevmRPC.MintTokens(key, 1).then((data) => {
+      console.log(data);
+      setMint(data)
       // setMint(bal);
       // setBalance(parseInt(bal.toHexString(), 16))
       setTimeout(() => {
@@ -41,8 +43,11 @@ const CompletedScreen = ({ route, navigation }) => {
         <>
           <Text style={{ color: colors.text }}>We're Minting you an NFT for your workout</Text>
           <Text style={{ color: colors.text }}>Wallet Receiving NFT: {address}</Text>
+          
         </>
       }
+
+      {mint && <Text style={{ color: colors.text }}>{JSON.stringify(mint)}</Text>}
 
       <Button
         title="Home"

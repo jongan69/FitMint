@@ -58,11 +58,11 @@ function WorkoutScreen({ navigation }) {
 
   const execeriseTime = 29;
   const breakTimeConst = 9;
-  const totalExerciseConst = 420;
+  // const totalExerciseConst = 420;
   const calories = 105
 
   // For Testing Faster
-  // const totalExerciseConst = 20;
+  const totalExerciseConst = 5;
 
   const [workoutTime, setWorkoutTime] = useState(totalExerciseConst);
   const [excerciseTime, setExerciseTime] = useState(execeriseTime);
