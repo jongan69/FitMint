@@ -123,8 +123,8 @@ const LoginScreen = ({ navigation }) => {
   // Use Default Passwordless email sign in
   const DefaultLogin = async (email: string) => {
     try {
-      console.log("Address was: ", email);
-      if (email.length < 80 && emailRegex.test(email)) {
+      console.log("Email was: ", email);
+      if (emailRegex.test(email)) {
         console.log(
           `Wallet Entry ${address} was valid, call or create user in DB: `
         );
@@ -222,11 +222,14 @@ const LoginScreen = ({ navigation }) => {
               style={{ marginRight: 5 }} />}
             keyboardType="email-address"
             value={email}
-            onChangeText={(value: string) => setEmail(value)} inputType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} />
+            onChangeText={(value: string) => setEmail(value)}
+            inputType={undefined}
+            fieldButtonLabel={undefined}
+            fieldButtonFunction={undefined} />
 
           <CustomButton
             label={"Login"}
-            onPress={DefaultLogin}
+            onPress={() => DefaultLogin(email)}
           />
 
           <Text

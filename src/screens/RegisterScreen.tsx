@@ -29,6 +29,7 @@ import * as WebBrowser from "expo-web-browser";
 import Constants, { AppOwnership } from 'expo-constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin } from '../store/login';
+import { RootState } from '../store';
 global.Buffer = global.Buffer || Buffer;
 
 const scheme = Constants?.manifest?.slug;
@@ -56,14 +57,13 @@ const RegisterScreen: React.FunctionComponent = ({ navigation }) => {
 
   const [error, setError] = useState(false)
 
-  // Setup nhost state
-  // const nhost = useNhostClient();
-
+  console.log(loggedin)
 
   // Uses Web3Auth SDK to generate a Wallet Private key from email of PROVIDER passed in
   // Then attempts to generate a wallet address from the private key from sdk
   // needs added randomness for security
   const ProviderRegister = async (Provider: string) => {
+    setError(false);
     const id = toast.loading('Registering with provider...');
     setTimeout(() => {
       toast.dismiss(id);
@@ -126,6 +126,7 @@ const RegisterScreen: React.FunctionComponent = ({ navigation }) => {
   };
 
   // Use Nhost to sign up user for a Wallet Address from email
+  // Use Default Passwordless email sign in
   const EmailRegister = async (email: string) => {
     const id = toast.loading('Register by email...', {
       width: 300
@@ -134,24 +135,65 @@ const RegisterScreen: React.FunctionComponent = ({ navigation }) => {
     setTimeout(() => {
       toast.dismiss(id);
     }, 3000);
+    try {
+      console.log("Email was: ", email);
+      if (emailRegex.test(email)) {
+        console.log(
+          `Wallet Entry ${address} was valid, call or create user in DB: `
+        );
+        toast.success("Logging in with email")
+        const web3auth = new Web3Auth(WebBrowser, {
+          clientId: WEB3AUTH_CLIENT_ID,
+          network: OPENLOGIN_NETWORK.TESTNET, // or other networks
+          whiteLabel: {
+            name: Constants?.manifest?.name,
+            logoLight: "https://web3auth.io/images/logo-light.png",
+            logoDark: "https://web3auth.io/images/logo-dark.png",
+            defaultLanguage: "en",
+            disclaimerHide: true,
+            dark: true,
+            theme: {
+              primary: colors.primary,
+            },
+          },
+        });
+        const info = await web3auth
+          .login({
+            loginProvider: "email_passwordless",
+            redirectUrl: resolvedRedirectUrl,
+            mfaLevel: "none",
+            curve: "secp256k1",
+            extraLoginOptions: {
+              login_hint: email,
+            },
+          })
+          .then((info: any) => {
+            console.log("DATA FROM WEB3 AUTH:", info);
+            const ethersProvider = ethers.getDefaultProvider(WEB3AUTH_PROVIDERURL);
+            const wallet = new ethers.Wallet(info.privKey, ethersProvider);
+            if (wallet) toast.success(`Created wallet!: ${wallet}`);
+            // Create Toast for private key generating
+            console.log("Logged In", wallet.address);
+            toast.success(`Logged In: ${wallet.address}`);
+            setAddress(wallet.address);
 
-    console.log('Email was: ', email)
 
-    if (email.length < 80 && emailRegex.test(email)) {
-      console.log(`Wallet Entry ${email} was valid, using magic link + web3auth sdk`);
-
-
-
-      toast.success('Success!', {
-        width: 300
-      });
-    } else {
-      // Throw error toast
-      toast.error('wtf', {
-        width: 300
-      })
+            // deleting certain non-serializable values bc redux
+            // let serializableInfo = delete info._signingKey
+            // serializableInfo = delete info.register
+            // Combines wallet info Object and web3auth object and dispatches to persisted state
+            const profileData = Object.assign(info, wallet);
+            dispatch(setLogin(profileData));
+          });
+        return info;
+      } else {
+        toast.error("Invalid Email!");
+      }
+    } catch (e: any) {
+      toast.error(e.toString());
+      console.log(e);
     }
-  }
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
