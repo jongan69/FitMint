@@ -249,7 +249,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("google")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,
@@ -275,7 +275,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("facebook")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,

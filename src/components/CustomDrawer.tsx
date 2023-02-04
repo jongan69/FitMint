@@ -138,7 +138,7 @@ const CustomDrawer = (
               marginBottom: 5,
             }}
           >
-            {profile.length > 0 ? getField("address")[7]?.name : { userType }}
+            {profile.length > 0 ? getField("address")[7]?.name : `${userType}`}
           </Text>
           <Text
             style={{
@@ -181,7 +181,7 @@ const CustomDrawer = (
                 marginRight: 5,
               }}
             >
-              {truncate(JSON.stringify(getField("address")[11]).replace(/["]/g, ""), 10)}
+              {profile.length > 0 ? truncate(JSON.stringify(getField("address")[11])?.replace(/["]/g, ""), 10) : "Wallet Address"}
             </Text>
             <FontAwesome5 name="wallet" size={14} color="#FFF" />
           </View>
