@@ -10,7 +10,7 @@ import { DAPP_CONTRACT } from "@env"
 
 // or just use vscode solidity extension to compile (Need to do if import like @openzepplin in contracts):
 // https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity
-import * as ContractABI from './bin/contracts/FitMint.json'
+// import * as ContractABI from './bin/contracts/FitMint.json'
 
 // 3. Deploy the contract
 // 4. Use ABI + Contract Deploy address to Interface
@@ -19,50 +19,6 @@ import * as ContractABI from './bin/contracts/FitMint.json'
 // Note: ankr rpc was hacked so def want to change this
 global.Buffer = global.Buffer || Buffer;
 const EthproviderUrl = 'https://rpc.ankr.com/eth_goerli'; // Or your desired provider url
-const FevmProviderUrl = 'https://api.hyperspace.node.glif.io/rpc/v1'
-
-// These are your front end functions for interfacing the contract
-// I will be connecting these to the store:  if user has wallet, 
-// update store values w chain functions on internal/events
-
-// const getMyTasks = async (key) => {
-//   try {
-//     const provider = new ethers.getDefaultProvider(providerUrl);
-//     const wallet = new ethers.Wallet(key);
-//     const signer = wallet.connect(provider);
-
-
-//     const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-//     let myTasks = await TaskContract.getMyTasks();
-//     return myTasks;
-
-
-
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
-
-
-
-
-// const deleteTask = async (taskID, key) => {
-//   try {
-//     const provider = new ethers.getDefaultProvider(providerUrl);
-//     const wallet = new ethers.Wallet(key);
-//     const signer = wallet.connect(provider);
-
-//     const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-//     let deleted = await TaskContract.deleteTasks();
-//     console.log('Deleted', deleted)
-//     return allFavors;
-
-
-
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 
 // Other Useful RPC Functions 
 const getChainId = async () => {

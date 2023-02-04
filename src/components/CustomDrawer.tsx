@@ -103,6 +103,7 @@ const CustomDrawer = (
       : null
   }, []);
 
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -181,7 +182,7 @@ const CustomDrawer = (
                 marginRight: 5,
               }}
             >
-              {profile.length > 0 ? truncate(JSON.stringify(getField("address")[11])?.replace(/["]/g, ""), 10) : "Wallet Address"}
+              {profile.length > 0 && truncate(JSON.stringify(getField("address")[11])?.replace(/["]/g, ""), 10) }
             </Text>
             <FontAwesome5 name="wallet" size={14} color="#FFF" />
           </View>
