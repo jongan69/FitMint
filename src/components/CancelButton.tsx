@@ -9,7 +9,7 @@ export default function Cancelutton({label, onPress}) {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: colors.primary,
+        backgroundColor: 'red',
         padding: 20,
         borderRadius: 10,
         marginBottom: 30,
@@ -20,7 +20,7 @@ export default function Cancelutton({label, onPress}) {
           textAlign: 'center',
           fontWeight: '700',
           fontSize: 16,
-          color: 'red',
+          color: 'white',
         }}>
         {label}
       </Text>
