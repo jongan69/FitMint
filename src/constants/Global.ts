@@ -28,7 +28,7 @@ global.btoa = global.btoa || require("base-64").encode;
 global.atob = global.atob || require("base-64").decode;
 
 global.Buffer = require("buffer").Buffer;
-global.TextEncoder = require("TextEncoder")
+global.TextEncoder = require("text-encoding")
 
 global.process.env.NODE_ENV = __DEV__ ? "development" : "production";
 global.process.version = "v9.40";

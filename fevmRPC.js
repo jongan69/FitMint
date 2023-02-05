@@ -90,6 +90,7 @@ const MintTokens = async (key, amount) => {
 
     // //Call the mint method
     let result = await FitMints.mint(wallet.address, amount, { gasLimit: 30000 })
+    
     if(result) {
       console.log("Minting Token:", result)
       return result

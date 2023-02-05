@@ -141,7 +141,6 @@ function WorkoutScreen({ navigation }: Props) {
   const breakTimeConst = 9;
   const totalExerciseConst = 420;
   const calories = 105
-
   // For Testing Faster
   // const totalExerciseConst = 5;
 

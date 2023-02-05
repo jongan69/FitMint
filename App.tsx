@@ -11,7 +11,6 @@ import Navigation from "./src/screens/navigation";
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux';
 import { store, persistor } from './src/store';
-
 import { Toasts } from '@backpackapp-io/react-native-toast';
 
 // For Nhost DB
