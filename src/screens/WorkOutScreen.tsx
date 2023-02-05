@@ -93,12 +93,12 @@ function WorkoutScreen({ navigation }: Props) {
         Alert.alert('7 minutes have passed!');
 
         navigation.navigate('Completed', {
-          exercises: exerciseNames,
-          exerciseTime: totalExerciseConst,
-          calories,
-          address,
-          key,
-          isGuest
+            exerciseNames,
+            totalExerciseConst,
+            calories,
+            address,
+            key,
+            isGuest
         })
 
         return;
@@ -182,7 +182,7 @@ function WorkoutScreen({ navigation }: Props) {
             onPress={() => navigation.navigate('Main')}
           /> */}
           <CancelButton
-            label = "Cancel workout" 
+            label="Cancel workout"
             onPress={() => navigation.navigate('Main')}
           />
         </>

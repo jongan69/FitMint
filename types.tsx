@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/typescript/
  */
 
-import { NavigatorScreenParams } from '@react-navigation/native';
+import { NavigatorScreenParams, ParamListBase } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 declare global {
@@ -19,7 +19,14 @@ export type RootStackParamList = {
   Home:undefined;
   Main:undefined;
   Workout: undefined;
-  Completed: undefined;
+  Completed:  { 
+    exerciseNames: any,
+    totalExerciseConst: any, 
+    calories: any, 
+    address: any,
+    key: any, 
+    isGuest: any, 
+  };
   Payment: undefined;
   Profile: undefined;
   Settings: undefined;

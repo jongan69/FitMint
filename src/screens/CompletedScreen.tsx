@@ -19,8 +19,8 @@ type Props = {
 
 const CompletedScreen = ({ route, navigation }: Props) => {
   const { colors } = useTheme();
-  const { exercises, exerciseTime, calories, address, key, isGuest } = route.params;
-  const minutes = Math.floor(exerciseTime / 60);
+  const { exerciseNames, totalExerciseConst, calories, address, key, isGuest } = route.params;
+  const minutes = Math.floor(totalExerciseConst / 60);
   const [mint, setMint] = React.useState();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const CompletedScreen = ({ route, navigation }: Props) => {
       <Text style={{ color: colors.text, fontSize : 40 }}>Congratulations!</Text>
       <Text style={{ color: colors.text , fontSize : 20}}>You Burned: {calories} Calories</Text>
       <Text style={{ color: colors.text, fontSize : 20 }}>You completed the {minutes} Minute Workout</Text>
-      {exercises.map((exercise: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => <Text style={{ color: colors.text }}>{exercise}</Text>)}
+      {exerciseNames.map((exercise: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => <Text style={{ color: colors.text }}>{exercise}</Text>)}
 
       {!isGuest &&
         <>
