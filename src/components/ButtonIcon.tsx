@@ -1,5 +1,6 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import React from 'react';
 
 /* @info The prop theme to detect the button variant. */ 
 export default function Button({ theme, label, onPress }) {

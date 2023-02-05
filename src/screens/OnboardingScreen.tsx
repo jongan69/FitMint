@@ -2,8 +2,19 @@ import React from 'react'
 import { SafeAreaView, View, Text, TouchableOpacity, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthNavParamList, RootStackParamList } from '../../types';
 
-const OnboardingScreen = ({ navigation }) => {
+type OnBoardingScreenNavigationProp = NativeStackNavigationProp<
+  AuthNavParamList,
+  'OnBoarding'
+>;
+
+type Props = {
+  navigation: OnBoardingScreenNavigationProp;
+};
+
+const OnboardingScreen = ({ navigation }: Props) => {
   const { colors } = useTheme();
   return (
     <SafeAreaView

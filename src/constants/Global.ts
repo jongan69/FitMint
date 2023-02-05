@@ -7,6 +7,7 @@ export interface Global {
   Buffer: any;
   process: any;
   location: any;
+  TextEncoder: any;
 }
 
 declare let global: Global;
@@ -27,6 +28,7 @@ global.btoa = global.btoa || require("base-64").encode;
 global.atob = global.atob || require("base-64").decode;
 
 global.Buffer = require("buffer").Buffer;
+global.TextEncoder = require("TextEncoder")
 
 global.process.env.NODE_ENV = __DEV__ ? "development" : "production";
 global.process.version = "v9.40";

@@ -34,6 +34,7 @@
     "@expo/config-plugins": "^5.0.2",
     "@expo/html-elements": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
+    "@glif/filecoin-address": "^2.0.20",
     "@nhost/react": "^0.13.0",
     "@openzeppelin/contracts": "4.8.1",
     "@react-native-async-storage/async-storage": "~1.17.3",
@@ -92,7 +93,8 @@
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "solc": "^0.8.17"
+    "solc": "^0.8.17",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

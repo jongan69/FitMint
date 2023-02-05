@@ -17,8 +17,13 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Auth: NavigatorScreenParams<AuthNavParamList> | undefined;
   Home:undefined;
+  Main:undefined;
+  Workout: undefined;
+  Completed: undefined;
+  Payment: undefined;
   Profile: undefined;
   Settings: undefined;
+  NotFound: undefined,
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

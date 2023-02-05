@@ -6,10 +6,21 @@ import { styles } from "../constants/Styles";
 // Redux
 import { RootState } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
-import { getKey } from '../store/wallet';
 import { defaultImageUrl } from "../constants/Colors";
+import { RootStackParamList } from "../../types";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-const ProfileScreen = ({ navigation }) => {
+
+type ProfileScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Profile'
+>;
+
+type Props = {
+  navigation: ProfileScreenNavigationProp;
+};
+
+const ProfileScreen = ({ navigation }: Props) => {
 
   const [email, setEmail] = useState<string>("");
   const [showPrivateKey, setShowPrivateKey] = useState(false);

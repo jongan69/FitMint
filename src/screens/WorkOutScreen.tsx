@@ -1,11 +1,40 @@
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
-import CancelButton from '../components/CancelButton';
+import { useSelector } from 'react-redux';
+import { RootStackParamList } from '../../types';
+import { truncate } from '../constants/Truncate';
+import { RootState } from '../store';
 
-// destructured
-function WorkoutScreen({ navigation }) {
+type WorkoutScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Workout'
+>;
+
+type Props = {
+  navigation: WorkoutScreenNavigationProp;
+};
+
+function WorkoutScreen({ navigation }: Props) {
+  const isGuest = useSelector((state: RootState) => state.login.guest);
+
+  let profile: any[] = []
+
+  const loggedin = useSelector((state: RootState) => state.login.loggedIn);
+  for (const [key, value] of Object.entries(loggedin)) {
+    // console.log(`${key}: ${value}`);
+    profile.push(key, value)
+  }
+  function getField(name: string) {
+    return profile?.valueOf(name)
+  }
+
+  const address = JSON.stringify(getField("address")[11])?.replace(/["]/g, "")
+  const key = JSON.stringify(getField("address")[1])?.replace(/["]/g, "")
+
+
   // image 9 too big, image 10 not centered
   const images = [
     require('../assets/images/workout-images/image1.gif'),
@@ -39,10 +68,11 @@ function WorkoutScreen({ navigation }) {
 
   const execeriseTime = 29;
   const breakTimeConst = 9;
-  const totalExerciseConst = 420;
+  // const totalExerciseConst = 420;
+  const calories = 105
 
   // For Testing Faster
-  // const totalExerciseConst = 20;
+  const totalExerciseConst = 5;
 
   const [workoutTime, setWorkoutTime] = useState(totalExerciseConst);
   const [excerciseTime, setExerciseTime] = useState(execeriseTime);
@@ -59,7 +89,16 @@ function WorkoutScreen({ navigation }) {
       if (workoutTime === 0) {
         clearInterval(workoutInterval);
         Alert.alert('7 minutes have passed!');
-        navigation.navigate('Completed')
+
+        navigation.navigate('Completed', {
+          exercises: exerciseNames,
+          exerciseTime: totalExerciseConst,
+          calories,
+          address,
+          key,
+          isGuest
+        })
+
         return;
       }
       setWorkoutTime((prevCountdown) => prevCountdown - 1);

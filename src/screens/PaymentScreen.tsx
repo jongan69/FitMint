@@ -1,7 +1,4 @@
-import { useTheme } from "@react-navigation/native";
 import React, { useState } from "react";
-import ProfileImage from "../components/ProfileImage";
-import CustomSwitch from "../components/CustomSwitch";
 import {
   ScrollView,
   SafeAreaView,
@@ -17,8 +14,27 @@ import { styles } from "../constants/Styles";
 import { defaultImageUrl } from "../constants/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-const Payment = ({ navigation }) => {
-  
+import CustomButton from "../components/CustomButton";
+import InputField from "../components/InputField";
+import { toast } from "@backpackapp-io/react-native-toast";
+import RPC from "../../ethersRPC"; // for using ethers.js
+import fevmRPC from "../../fevmRPC";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types";
+
+type PaymentScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Payment'
+>;
+
+type Props = {
+  navigation: PaymentScreenNavigationProp;
+};
+
+const Payment = ({ navigation }: Props) => {
+  const [balance, setBalance] = React.useState(0);
+  const [mints, setMint] = React.useState(0);
+
   const [favorsTab, setMoneyTab] = useState(1);
 
   const onSelectSwitch = (value) => {
@@ -39,7 +55,29 @@ const Payment = ({ navigation }) => {
   function getField(name: string) {
     return profile?.valueOf(name)
   }
-  
+
+  const getBalance = async (key: string) => {
+    const id = toast.loading("Getting Eth Balance...");
+    await RPC.getBalance(key).then((bal) => {
+      console.log(bal);
+      setBalance(bal);
+      // setBalance(parseInt(bal.toHexString(), 16))
+      setTimeout(() => {
+        toast.dismiss(id);
+      }, 3000);
+    });
+
+    const id2 = toast.loading("Getting Mint Balance...");
+    await fevmRPC.getTokens(key).then((bal) => {
+      console.log(bal);
+      setMint(bal);
+      // setBalance(parseInt(bal.toHexString(), 16))
+      setTimeout(() => {
+        toast.dismiss(id2);
+      }, 3000);
+    });
+  };
+
   return (
     <SafeAreaView>
       <ScrollView style={{ padding: 20 }}>
@@ -76,7 +114,7 @@ const Payment = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <Image
                 source={{
-                  uri: profile?.length > 0 ?  getField("address")[7]?.profileImage : defaultImageUrl
+                  uri: profile?.length > 0 ? getField("address")[7]?.profileImage : defaultImageUrl
                 }}
                 style={styles.profileImage4}
               />
@@ -162,6 +200,13 @@ const Payment = ({ navigation }) => {
               >
                 tFils:
               </Text>
+              <CustomButton label={"Update Balance"} onPress={() => {
+                profile.length > 0
+                  ? getBalance(JSON.stringify(getField("address")[1]))
+                  : null
+              }} />
+              <InputField label={"Send To"} icon={undefined} inputType={undefined} keyboardType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} value={undefined} onChangeText={undefined} />
+              <CustomButton label={"Send Transaction"} />
             </View>
           </View>
         </View>

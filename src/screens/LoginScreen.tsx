@@ -40,11 +40,23 @@ const resolvedRedirectUrl =
 import { RootState } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLogin, setGuest } from '../store/login';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AuthNavParamList } from "../../types";
 
 // Nhost
 // import { useNhostClient } from "@nhost/react";
 
-const LoginScreen = ({ navigation }) => {
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  AuthNavParamList,
+  'Login'
+>;
+
+type Props = {
+  navigation: LoginScreenNavigationProp;
+};
+
+
+const LoginScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   let emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -123,8 +135,8 @@ const LoginScreen = ({ navigation }) => {
   // Use Default Passwordless email sign in
   const DefaultLogin = async (email: string) => {
     try {
-      console.log("Address was: ", email);
-      if (email.length < 80 && emailRegex.test(email)) {
+      console.log("Email was: ", email);
+      if (emailRegex.test(email)) {
         console.log(
           `Wallet Entry ${address} was valid, call or create user in DB: `
         );
@@ -222,11 +234,14 @@ const LoginScreen = ({ navigation }) => {
               style={{ marginRight: 5 }} />}
             keyboardType="email-address"
             value={email}
-            onChangeText={(value: string) => setEmail(value)} inputType={undefined} fieldButtonLabel={undefined} fieldButtonFunction={undefined} />
+            onChangeText={(value: string) => setEmail(value)}
+            inputType={undefined}
+            fieldButtonLabel={undefined}
+            fieldButtonFunction={undefined} />
 
           <CustomButton
             label={"Login"}
-            onPress={DefaultLogin}
+            onPress={() => DefaultLogin(email)}
           />
 
           <Text
@@ -249,7 +264,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("google")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,
@@ -275,7 +290,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => Login("facebook")}
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.notification,
                 borderColor: colors.border,
                 borderWidth: 2,
                 borderRadius: 10,

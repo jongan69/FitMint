@@ -18,8 +18,7 @@ import { RootStackParamList } from "../../../types";
 
 // Redux
 import { RootState } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLogin } from '../../store/login';
+import { useSelector } from 'react-redux';
 
 // import { useAuthenticationStatus } from "@nhost/react";
 

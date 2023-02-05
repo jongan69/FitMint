@@ -1,15 +1,16 @@
 import '@ethersproject/shims';
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';
+
 import { DAPP_CONTRACT } from "@env"
 
 // To do for contract compile
-// 1. `yarn compile-contracts`
+// 1. `yarn compile-contracts` WILL COMPILE ANY BASIC CONTRACTS
 // 2. Change import to the new artifacts/abi.json
 
-// or just use vscode solidity extension to compile:
+// or just use vscode solidity extension to compile (Need to do if import like @openzepplin in contracts):
 // https://marketplace.visualstudio.com/items?itemName=JuanBlanco.solidity
-import * as ContractABI from './bin/contracts/FitMint.json'
+// import * as ContractABI from './bin/contracts/FitMint.json'
 
 // 3. Deploy the contract
 // 4. Use ABI + Contract Deploy address to Interface
@@ -17,84 +18,12 @@ import * as ContractABI from './bin/contracts/FitMint.json'
 
 // Note: ankr rpc was hacked so def want to change this
 global.Buffer = global.Buffer || Buffer;
-const providerUrl = 'https://rpc.ankr.com/eth_goerli'; // Or your desired provider url
-
-
-// These are your front end functions for interfacing the contract
-// I will be connecting these to the store:  if user has wallet, 
-// update store values w chain functions on internal/events
-
-
-const addTask = async (TaskText, key) => {
-  try {
-    const isComplete = false;
-    const provider = new ethers.getDefaultProvider(providerUrl);
-    const wallet = new ethers.Wallet(key);
-    const signer = wallet.connect(provider);
-
-
-    const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-    await TaskContract.estimateGas.addTask(TaskText, isComplete)
-      .then(async (hex) => {
-        let gasLimit = parseInt(hex.toHexString(), 16)
-        console.log('gas estimate to post a favor is', gasLimit);
-        if (gasLimit > 0) {
-          let task = TaskContract.addTask(TaskText, isComplete, { gasLimit });
-          return task;
-        } else {
-          let task = TaskContract.addFavor(TaskText, isComplete, { gasLimit: 30000 });
-          return task;
-        }
-      });
-
-
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const getMyTasks = async (key) => {
-  try {
-    const provider = new ethers.getDefaultProvider(providerUrl);
-    const wallet = new ethers.Wallet(key);
-    const signer = wallet.connect(provider);
-
-
-    const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-    let myTasks = await TaskContract.getMyTasks();
-    return myTasks;
-
-
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const deleteTask = async (taskID, key) => {
-  try {
-    const provider = new ethers.getDefaultProvider(providerUrl);
-    const wallet = new ethers.Wallet(key);
-    const signer = wallet.connect(provider);
-
-    const TaskContract = new ethers.Contract(DAPP_CONTRACT, ContractABI, signer);
-    let deleted = await TaskContract.deleteTasks();
-    console.log('Deleted', deleted)
-    return allFavors;
-
-
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
+const EthproviderUrl = 'https://rpc.ankr.com/eth_goerli'; // Or your desired provider url
 
 // Other Useful RPC Functions 
 const getChainId = async () => {
   try {
-    const ethersProvider = ethers.getDefaultProvider(providerUrl);
+    const ethersProvider = ethers.getDefaultProvider(EthproviderUrl);
     const networkDetails = await ethersProvider.getNetwork();
     return networkDetails;
   } catch (error) {
@@ -115,8 +44,9 @@ const getAccounts = async key => {
 
 const getBalance = async key => {
   try {
-    const ethersProvider = ethers.getDefaultProvider(providerUrl);
-    const wallet = new ethers.Wallet(key, ethersProvider);
+    let cleanKey = key.replace(/["]/g, "");
+    const ethersProvider = ethers.getDefaultProvider(EthproviderUrl);
+    const wallet = new ethers.Wallet(cleanKey, ethersProvider);
     const balance = await wallet.getBalance();
     const balanceInEth = ethers.utils.formatEther(balance);
     return balanceInEth;
@@ -127,7 +57,7 @@ const getBalance = async key => {
 
 const sendTransaction = async (key, destination, maxPriorityFeePerGas, maxFeePerGas) => {
   try {
-    const ethersProvider = ethers.getDefaultProvider(providerUrl);
+    const ethersProvider = ethers.getDefaultProvider(EthproviderUrl);
     const wallet = new ethers.Wallet(key, ethersProvider);
 
     // Convert 1 ether to wei
@@ -148,7 +78,7 @@ const sendTransaction = async (key, destination, maxPriorityFeePerGas, maxFeePer
 
 const signMessage = async (key, message) => {
   try {
-    const ethersProvider = ethers.getDefaultProvider(providerUrl);
+    const ethersProvider = ethers.getDefaultProvider(EthproviderUrl);
     const wallet = new ethers.Wallet(key, ethersProvider);
     const originalMessage = message;
     // Sign the message
@@ -160,9 +90,6 @@ const signMessage = async (key, message) => {
 };
 
 export default {
-  addTask,
-  getMyTasks,
-  deleteTask,
   getChainId,
   getAccounts,
   getBalance,
