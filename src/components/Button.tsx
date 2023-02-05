@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: "white",
+    backgroundColor : "red",
     fontSize: 16,
     fontWeight: "bold",
   },

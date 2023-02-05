@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { View, Text, Button } from 'react-native'
 import fevmRPC from '../../fevmRPC';
 import { RootStackParamList } from '../../types';
+import ConfettiCannon from 'react-native-confetti-cannon';
 
 type CompletedScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -46,9 +47,10 @@ const CompletedScreen = ({ route, navigation }: Props) => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: colors.text }}>Congratulations!</Text>
-      <Text style={{ color: colors.text }}>You Burned: {calories} Calories</Text>
-      <Text style={{ color: colors.text }}>You completed the {minutes} Minute Workout</Text>
+       <ConfettiCannon count={200} origin={{x: -10, y: 0}} />
+      <Text style={{ color: colors.text, fontSize : 40 }}>Congratulations!</Text>
+      <Text style={{ color: colors.text , fontSize : 20}}>You Burned: {calories} Calories</Text>
+      <Text style={{ color: colors.text, fontSize : 20 }}>You completed the {minutes} Minute Workout</Text>
       {exercises.map((exercise: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined) => <Text style={{ color: colors.text }}>{exercise}</Text>)}
 
       {!isGuest &&

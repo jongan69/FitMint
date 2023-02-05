@@ -5,6 +5,8 @@ import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-n
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from '../../types';
+import CancelButton from '../components/CancelButton';
+import Cancelutton from '../components/CancelButton';
 import { truncate } from '../constants/Truncate';
 import { RootState } from '../store';
 
@@ -175,8 +177,12 @@ function WorkoutScreen({ navigation }: Props) {
             {({ remainingTime }) => <Text style={styles.numberText}>{excerciseTime}</Text>}
           </CountdownCircleTimer>
 
-          <Button
+          {/* <Button
             title="Cancel workout"
+            onPress={() => navigation.navigate('Main')}
+          /> */}
+          <CancelButton
+            label = "Cancel workout" 
             onPress={() => navigation.navigate('Main')}
           />
         </>

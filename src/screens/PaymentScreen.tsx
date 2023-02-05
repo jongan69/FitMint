@@ -188,7 +188,7 @@ const Payment = ({ navigation }: Props) => {
                   fontSize: 19,
                 }}
               >
-                Mints: {mints}
+                FileCoin NFT's:
               </Text>
 
               <Text
@@ -198,7 +198,7 @@ const Payment = ({ navigation }: Props) => {
                   fontSize: 19,
                 }}
               >
-                Eth: {balance}
+                tFils:
               </Text>
               <CustomButton label={"Update Balance"} onPress={() => {
                 profile.length > 0
