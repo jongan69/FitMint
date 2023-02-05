@@ -19,7 +19,7 @@ export const store = configureStore({
   reducer: {
     login: persistedReducer,
     // Demonstrates Async Thunk
-    users: usersReducer,
+    // users: usersReducer,
   },
   middleware: (getDefaultMiddleware) => 
   getDefaultMiddleware({

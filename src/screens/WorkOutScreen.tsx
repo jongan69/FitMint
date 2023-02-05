@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { View, Text, Image, Alert, Pressable, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, Alert, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
 import { useSelector } from 'react-redux';
 import { RootStackParamList } from '../../types';
@@ -20,6 +20,9 @@ type Props = {
 };
 
 function WorkoutScreen({ navigation }: Props) {
+
+
+  /// Redux Global State
   const isGuest = useSelector((state: RootState) => state.login.guest);
 
   let profile: any[] = []
@@ -29,12 +32,78 @@ function WorkoutScreen({ navigation }: Props) {
     // console.log(`${key}: ${value}`);
     profile.push(key, value)
   }
+
   function getField(name: string) {
     return profile?.valueOf(name)
   }
 
   const address = JSON.stringify(getField("address")[11])?.replace(/["]/g, "")
   const key = JSON.stringify(getField("address")[1])?.replace(/["]/g, "")
+
+
+
+  /// Jorges AI workout API
+  const workoutURL = "https://gen-iworkout.vercel.app/api/generate-workout"
+  const workoutGifUrl = "https://gen-iworkout.vercel.app/api/generate-gif"
+  let gifs = []
+
+  const apiCall = async (url: RequestInfo) => {
+    await fetch(url, {
+      method: 'GET'
+    }).then(async (response) => {
+      const data = await response.json();
+      // console.log('DATAS', data?.result)
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      } else {
+        apiPost(workoutGifUrl, data?.result)
+      }
+    })
+  }
+
+  const apiPost = async (url: RequestInfo, body: any) => {
+    console.log("Starting AI Gif post")
+    let test = Array.from(body)
+    test.forEach((item: any, index: any) => {
+      console.log('Test', item)
+    })
+
+    await fetch(url, {
+      method: 'POST',
+      body,
+    }).then(async (response) => {
+      const data = await response.json();
+      // console.log('DATAS 2', data)
+
+     
+      // data?.forEach((index: any, item: any) => {
+      //   // console.log('ABLLSSSS',item, body)
+      //   if(item?.name === body[index]){
+      //     console.log('ABLLSSSS', JSON.stringify(body))
+      //   }
+      //   // console.log(item?.name)
+      // })
+      
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+    })
+  }
+
+  useEffect(() => {
+
+    if (!isGuest) {
+      console.log("Starting AI workout call")
+      apiCall(workoutURL)
+      // apiCall(workoutURL)
+    }
+
+    return () => { }
+  }, [])
+
+
+
+
 
 
   // image 9 too big, image 10 not centered
@@ -70,11 +139,11 @@ function WorkoutScreen({ navigation }: Props) {
 
   const execeriseTime = 29;
   const breakTimeConst = 9;
-  // const totalExerciseConst = 420;
+  const totalExerciseConst = 420;
   const calories = 105
 
   // For Testing Faster
-  const totalExerciseConst = 5;
+  // const totalExerciseConst = 5;
 
   const [workoutTime, setWorkoutTime] = useState(totalExerciseConst);
   const [excerciseTime, setExerciseTime] = useState(execeriseTime);
@@ -93,12 +162,12 @@ function WorkoutScreen({ navigation }: Props) {
         Alert.alert('7 minutes have passed!');
 
         navigation.navigate('Completed', {
-            exerciseNames,
-            totalExerciseConst,
-            calories,
-            address,
-            key,
-            isGuest
+          exerciseNames,
+          totalExerciseConst,
+          calories,
+          address,
+          key,
+          isGuest
         })
 
         return;
@@ -202,6 +271,7 @@ function WorkoutScreen({ navigation }: Props) {
           </CountdownCircleTimer>
         </>
       )}
+
     </View>
   );
 }
