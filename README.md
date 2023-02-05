@@ -1,5 +1,8 @@
 # FitMint
 
+### Unimplemented AI Workout + API
+[AI Workout](https://gen-iworkout.vercel.app/)
+
 [![CodeQL](https://github.com/jongan69/FitMint/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jongan69/FitMint/actions/workflows/codeql-analysis.yml)
 
 [![Build and lint](https://github.com/jongan69/FitMint/actions/workflows/validate.yml/badge.svg)](https://github.com/jongan69/FitMint/actions/workflows/validate.yml)
