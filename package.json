@@ -51,7 +51,7 @@
     "csstype": "^3.1.1",
     "eas": "^0.1.0",
     "ethers": "^5.7.1",
-    "expo": "^47.0.0",
+    "expo": "^49.0.0",
     "expo-asset": "~8.7.0",
     "expo-av": "~13.0.2",
     "expo-constants": "~14.0.2",
