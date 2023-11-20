@@ -35,7 +35,7 @@
     "@expo/html-elements": "^0.2.2",
     "@expo/vector-icons": "^13.0.0",
     "@glif/filecoin-address": "^2.0.20",
-    "@nhost/react": "^0.13.0",
+    "@nhost/react": "^2.1.1",
     "@openzeppelin/contracts": "4.9.3",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-navigation/bottom-tabs": "^6.0.5",
